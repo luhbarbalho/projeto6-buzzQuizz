@@ -1,0 +1,217 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,500;1,700;1,900&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+/* Hide scrollbar*/
+body::-webkit-scrollbar  {
+    display: none; /*Chrome, Safari and Opera */
+}
+body {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+header {
+    height: 69px;
+    width: 100vw;
+    background-color: #ec372d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 4px 4px 0px #00000040;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+}
+
+header h1 {
+    color: white;
+    font-family: Roboto, sans-serif;font-weight: bold;
+    font-size: 37px;
+}
+
+.container {
+    margin-top: 65px;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #FAFAFA;
+}
+
+.nao-tem-quizz {
+    margin-top: 69px;
+    width: 85%;
+    height: 181px;
+    border: 1px dashed #D4D4D4;
+    border-radius: 5px;
+    font-family: Roboto, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.nao-tem-quizz p {
+    color: #B9B9B9;
+    width: 200px;
+    text-align: center;
+}
+
+.nao-tem-quizz button {
+    width: 136px;
+    height: 40px;
+    border: 1px dashed #EC362D;
+    color: #EC362D;
+    background-color: rgba(255, 255, 255, 0);
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.meus-quizzes {
+    width: 85%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 60px;
+}
+
+.titulinho {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+}
+
+.titulinho p {
+    font-size: 20px;
+    font-family: Roboto, Sans-serif;
+    margin: 0 10px;
+
+}
+
+.titulinho button {
+    border: none;
+    background-color: rgba(255, 255, 255, 0);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.titulinho ion-icon {
+    color: red;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.meusQuizzesJuntos {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin: 13px;
+    width: 100%;
+    height: auto;
+}
+
+.quizzPronto {
+    margin: 11px;
+}
+
+.quizzPronto p{
+    margin-left: 17px;
+    color: white;
+    font-size: 19px;
+    font-family: Roboto, Sans-serif;
+    font-weight: 400;
+}
+
+.img-quizz {
+        background: linear-gradient(
+        to bottom,
+        rgba(0,0,0, 0),
+        rgba(0, 0, 0, 0.7)
+        ),url(../media/Hogwarts.jpeg.webp);
+    width: 340px; 
+    height: 181px;
+    background-position: center; /* Center the image */
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.todos-quizzes {
+    width: 85%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 60px;
+}
+
+.quizzes-criadosJuntos {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin: 13px;
+    width: 100%;
+    height: auto;
+}
+
+main{
+    display: none;
+}
+
+
+
+@media (max-width: 1100px){
+    
+    .nao-tem-quizz{
+        width: 340px;
+    }
+
+    .titulinho {
+        justify-content: space-between;
+    }
+
+    .titulinho p{
+        margin-left: 0;
+    }
+
+    .titulinho ion-icon {
+        margin-top: 3px;
+        margin-left: 5px;
+    }
+
+    .meus-quizzes {
+        width: 340px;
+        justify-content: center;
+    }
+
+    .meusQuizzesJuntos {
+        justify-content: center;
+    }
+    .todos-quizzes {
+        width: 340px;
+        justify-content: center;
+    }
+    .quizzes-criadosJuntos {
+        justify-content: center;
+    }
+}

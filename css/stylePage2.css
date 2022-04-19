@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,500;1,700;1,900&display=swap');
+
+* {
+    box-sizing: border-box;
+    font-family: Roboto, sans-serif;
+    font-weight: 400;
+}
+
+.containerQuizz {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #E5E5E5;
+}
+
+.imgQuizz{
+    background: linear-gradient(
+        to bottom,
+        rgba(0,0,0, 0.2),
+        rgba(0, 0, 0, 0.7)
+        ),url(../media/LOTR-cover.jpeg);
+    width: 100vw; 
+    height: 227px;
+    margin-top: 69px;
+    background-position: center; /* Center the image */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.imgQuizz h2{
+    color: white;
+    font-size: 39px;
+    letter-spacing: 0.5px;
+}
+
+.perguntaDiv {
+    background-color: sienna;
+    width: 759px;
+    height: 676px;/**************************/
+    margin-top: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    box-shadow: 0px 0px 10px 0px #0000000D;
+    border-radius: 3px;
+    margin-bottom: 10px;
+}
+
+.quadrinho {
+    width: 95%;
+    height: 640px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 25px;
+
+}
+.tituloPergunta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 95%;
+    height: 138px;
+    padding: 30px;
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+    background-color: violet;
+}
+
+.tituloPergunta h4 {
+    font-size: 23px;
+}
+
+.opcoes-resposta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.opcao {
+    margin: 10px;
+    margin-bottom: 5px;/******************/
+    height: 230px;
+    background-color: tomato;
+}
+
+.opcao img{
+    width: 330px;
+    height: 175px;
+    object-fit: cover;
+    border-radius: 2px;
+    margin: 2px;
+}
+
+.opcao p {
+    font-size: 20px;
+    font-weight: 700;
+    width: 330px;
+    height: 30px;
+    padding-left: 2px;
+    margin-top: 5px;
+    background-color: yellowgreen;
+}
