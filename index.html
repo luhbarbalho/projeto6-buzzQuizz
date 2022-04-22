@@ -23,14 +23,14 @@
             <div class="nao-tem-quizz">
 
                 <p>Você não criou nenhum quizz ainda :(</p>
-                <button>Criar Quizz</button>
+                <button onclick="criarQuizz()">Criar Quizz</button>
 
             </div>
-            <div class="meus-quizzes">
+            <div class="meus-quizzes escondido">
 
                     <div class="titulinho">
                         <p>Seus Quizzes</p><!--vai aparecer apenas se já tiver algum quizz-->
-                        <button><ion-icon name="add-circle"></ion-icon></button>
+                        <button onclick="criarQuizz()"><ion-icon name="add-circle"></ion-icon></button>
                     </div>
 
                     <div class="meusQuizzesJuntos">
@@ -102,7 +102,7 @@
         </div>
     </main>
 
-    <section class="containerQuizz">
+    <section class="containerQuizz escondido">
         <div class="titulozao">
             <div class="imgQuizz">
                 <h2>O quanto de Senhor dos Anéis você sabe?</h2>
@@ -136,7 +136,7 @@
         </div>
     </section>
 
-    <section class="comeceComeco">
+    <section class="comeceComeco escondido">
 
         <div class="comeceComecoCentral">
 
@@ -149,13 +149,13 @@
                 <input type="text" class="comeco-inputs quantNiveis" placeholder="Quantidade de níveis do quizz">
             </div>
 
-            <button class="btn">Prosseguir pra criar perguntas</button>
+            <button class="btn" onclick="criarPerguntas()">Prosseguir pra criar perguntas</button>
 
         </div>
 
     </section>
 
-    <section class="criePerguntas">
+    <section class="criePerguntas escondido">
         <div class="criePerguntasCentral">
 
             <h3>Crie suas perguntas</h3>
@@ -191,7 +191,7 @@
                 </div>
             </div>
 
-            <button class="btn">Prosseguir pra criar níveis</button>
+            <button class="btn" onclick="criarNiveis()">Prosseguir pra criar níveis</button>
 
         </div>
     </section>

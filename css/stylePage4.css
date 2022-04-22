@@ -92,6 +92,10 @@
     font-weight: 300;
 }
 
+.escondido {
+    display: none;
+}
+
 @media (max-width: 1100px){
 
     /*.comeceComecoCentral {
