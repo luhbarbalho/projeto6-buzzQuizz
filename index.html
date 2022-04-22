@@ -9,6 +9,8 @@
     <link rel="stylesheet" type="text/css" href="./css/stylePage2.css">
     <link rel="stylesheet" type="text/css" href="./css/stylePage3.css">
     <link rel="stylesheet" type="text/css" href="./css/stylePage4.css">
+    <link rel="stylesheet" type="text/css" href="./css/stylePage5.css">
+    <link rel="stylesheet" type="text/css" href="./css/stylePage6.css">
     <title>BuzzQuizz</title>
 </head>
 <body>
@@ -17,7 +19,7 @@
         <h1>BuzzQuiz</h1>
     </header>
 
-    <main>
+    <main class="displayNone">
         <div class="container">
 
             <div class="nao-tem-quizz">
@@ -102,7 +104,7 @@
         </div>
     </main>
 
-    <section class="containerQuizz">
+    <section class="containerQuizz displayNone">
         <div class="titulozao">
             <div class="imgQuizz">
                 <h2>O quanto de Senhor dos Anéis você sabe?</h2>
@@ -136,20 +138,20 @@
         </div>
     </section>
 
-    <section class="comeceComeco">
+    <section class="comeceComeco displayNone">
 
         <div class="comeceComecoCentral">
 
             <h3>Comece pelo começo</h3>
 
             <div class="comecoInputs">
-                <input type="text" class="comeco-inputs titulo" placeholder="Título do seu quizz">
+                <input type="text" class="comeco-inputs tituloQuizz" placeholder="Título do seu quizz">
                 <input type="text" class="comeco-inputs urlQuizz" placeholder="URL da imagem do seu quizz">
                 <input type="text" class="comeco-inputs quantPerguntas" placeholder="Quantidade de perguntas do quizz">
                 <input type="text" class="comeco-inputs quantNiveis" placeholder="Quantidade de níveis do quizz">
             </div>
 
-            <button class="btn">Prosseguir pra criar perguntas</button>
+            <button onclick="conferenciaBasica()" class="btn">Prosseguir pra criar perguntas</button>
 
         </div>
 
@@ -161,42 +163,96 @@
             <h3>Crie suas perguntas</h3>
 
             <div class="perguntasInputs">
-                <div class="p">
+                <div class="pergunta">
                     <p>Pergunta 1</p>
 
-                    <input type="text" class="pergunta-inputs" placeholder="Texto da pergunta">
-                    <input type="text" class="pergunta-inputs" placeholder="Cor de fundo da pergunta">
+                    <input type="text" class="pergunta-inputs perguntaInput" placeholder="Texto da pergunta">
+                    <input type="text" class="pergunta-inputs PerguntaCor" placeholder="Cor de fundo da pergunta">
                 </div>
 
-                <div class="r">
+                <div class="respostas">
                     <p>Resposta correta</p>
 
-                    <input type="text" class="pergunta-inputs" placeholder="Resposta correta">
-                    <input type="text" class="pergunta-inputs" placeholder="URL da imagem">
+                    <input type="text" class="pergunta-inputs RespostaCorreta" placeholder="Resposta correta">
+                    <input type="text" class="pergunta-inputs URLRespostaCorreta" placeholder="URL da imagem">
                 </div>
-                <div class="r">
+                <div class="respostas">
                     <p>Resposta incorretas</p>
-                    <div class="r2">
-                        <input type="text" class="pergunta-inputs" placeholder="Resposta incorreta 1">
-                        <input type="text" class="pergunta-inputs" placeholder="URL da imagem 1">
+                    <div class="respostasErro">
+                        <input type="text" class="pergunta-inputs RespostaIncorreta1" placeholder="Resposta incorreta 1">
+                        <input type="text" class="pergunta-inputs URLRespostaIncorreta1" placeholder="URL da imagem 1">
                     </div>
-                    <div class="r2">
-                        <input type="text" class="pergunta-inputs" placeholder="Resposta incorreta 2">
-                        <input type="text" class="pergunta-inputs" placeholder="URL da imagem 2">
+                    <div class="respostasErro">
+                        <input type="text" class="pergunta-inputs RespostaIncorreta2" placeholder="Resposta incorreta 2">
+                        <input type="text" class="pergunta-inputs URLRespostaIncorreta2" placeholder="URL da imagem 2">
                     </div>
-                    <div class="r2">
-                        <input type="text" class="pergunta-inputs" placeholder="Resposta incorreta 3">
-                        <input type="text" class="pergunta-inputs" placeholder="URL da imagem 3">
+                    <div class="respostasErro">
+                        <input type="text" class="pergunta-inputs RespostaIncorreta3" placeholder="Resposta incorreta 3">
+                        <input type="text" class="pergunta-inputs URLRespostaIncorreta3" placeholder="URL da imagem 3">
                     </div>
                 </div>
             </div>
+            <div class="perguntadobrada">
+                <p>Pergunta 2</p>
+                <button><ion-icon name="create-outline"></ion-icon></button>
+            </div>
+            <div class="perguntadobrada">
+                <p>Pergunta 3</p>
+                <button><ion-icon name="create-outline"></ion-icon></button>
+            </div>
 
-            <button class="btn">Prosseguir pra criar níveis</button>
+            <button onclick="conferenciaPergunta()" class="btn">Prosseguir pra criar níveis</button>
 
         </div>
     </section>
 
+    <section class="decidaNiveis displayNone">
+        <div class="decidaNiveisCentral">
+
+            <h3>Agora, decida os níveis</h3>
+
+            <div class="niveisInputs">
+                <div class="nivel">
+                    <p>Nível 1</p>
+                    <input type="text" class="comeco-inputs titulo" placeholder="Título do nível">
+                    <input type="text" class="comeco-inputs acerto" placeholder="% de acerto mínima">
+                    <input type="text" class="comeco-inputs urlimg" placeholder="URL da imagem do nível">
+                    <input type="text" class="comeco-inputs descricao-nivel" placeholder="Descrição do nível">
+                </div>
+            </div>
+
+            <div class="niveldobrado">
+                <p>Nível 2</p>
+                <button><ion-icon name="create-outline"></ion-icon></button>
+            </div>
+
+            <div class="niveldobrado">
+                <p>Nível 3</p>
+                <button><ion-icon name="create-outline"></ion-icon></button>
+            </div>
+    
+            <button class="btn">Finalizar Quizz</button>
+
+        </div>
+
+    </section>
+
+    <section class="quizzPronto displayNone">
+        <div class="quizzProntoCentral">
+
+            <h3>Seu quizz está pronto!</h3>
+
+            <div class="bkg-gradient">
+                <img class="img-quizz-pronto" src="https://guiadoestudante.abril.com.br/wp-content/uploads/sites/4/2010/11/Hogwarts.jpeg?quality=100&strip=info&resize=680,453" alt="">
+            </div>
+
+            <button class="btn">Finalizar Quizz</button>
+
+            <button class="voltarbtn">Voltar para Home</button>
+
+    </section>
+
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script src="script.js"></script>
+    <script src="./js/scriptPerguntas.js"></script>
 </body>
-</html>
+</html> 
