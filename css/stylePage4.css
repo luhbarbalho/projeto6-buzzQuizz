@@ -134,10 +134,6 @@ p{
     margin: 0;
 }
 
-.escondido {
-    display: none;
-}
-
 @media (max-width: 1100px){
 
     .criePerguntasCentral {

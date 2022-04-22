@@ -1,7 +1,6 @@
 let basicoCerto;
 let perguntaCerto;
 
-
 function conferenciaBasica() {
     basicoCerto = 0;
 
@@ -27,8 +26,6 @@ function conferenciaBasica() {
         alert("Tem alguma informação errada aí!");
     }
 }
-
-
 
 function conferenciaPergunta() {
 
