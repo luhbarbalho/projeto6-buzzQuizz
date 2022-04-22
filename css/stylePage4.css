@@ -99,7 +99,6 @@ p{
     font-weight: 300;
 }
 
-
 .perguntadobrada {
     display: flex;
     flex-direction: row;
@@ -134,7 +133,6 @@ p{
 .perguntadobrada p {
     margin: 0;
 }
-
 
 @media (max-width: 1100px){
 

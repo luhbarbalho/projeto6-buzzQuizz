@@ -1,9 +1,15 @@
+let numeroQuizzes = 0;
 let basicoCerto;
 let perguntaCerto;
 let nivelCerto;
 let quantPerguntas;
 let quantNiveis;
+const main = document.querySelector("main");
 
+function criarQuizz() {
+    main.classList.add("escondido");
+    document.querySelector(".comeceComeco").classList.remove("escondido");
+}
 
 
 function conferenciaBasica() {
@@ -25,17 +31,13 @@ function conferenciaBasica() {
         basicoCerto += 1;
     }
     if (basicoCerto == 4) {
-        document.querySelector(".comeceComeco").classList.add("displayNone");
-        document.querySelector(".criePerguntas").classList.remove("displayNone");
+        document.querySelector(".comeceComeco").classList.add("escondido");
+        document.querySelector(".criePerguntas").classList.remove("escondido");
     } if (basicoCerto < 4) {
         alert("Tem alguma informação errada aí!");
     }
 }
 
-
-function gerarCriePerguntas() {
-    
-}
 
 
 
@@ -81,8 +83,8 @@ function conferenciaPergunta() {
     
 
     if (perguntaCerto >= 12) {
-        document.querySelector(".criePerguntas").classList.add("displayNone");
-        document.querySelector(".decidaNiveis").classList.remove("displayNone");
+        document.querySelector(".criePerguntas").classList.add("escondido");
+        document.querySelector(".decidaNiveis").classList.remove("escondido");
     } if (perguntaCerto < 12) {
         alert("Tem alguma informação errada aí!");
     }
@@ -114,11 +116,20 @@ function conferenciaNiveis() {
 
 
     if (nivelCerto == 4) {
-        document.querySelector(".decidaNiveis").classList.add("displayNone");
-        document.querySelector(".quizzPronto").classList.remove("displayNone");
+        document.querySelector(".decidaNiveis").classList.add("escondido");
+        document.querySelector(".finalizarQuizz").classList.remove("escondido");
     } if (nivelCerto < 4) {
         alert("Tem alguma informação errada aí!");
     }
 
 
+}
+
+
+function voltarHome() {
+    document.querySelector(".finalizarQuizz").classList.add("escondido");
+    main.classList.remove("escondido");
+
+    document.querySelector(".nao-tem-quizz").classList.add("escondido");
+    document.querySelector(".meus-quizzes").classList.remove("escondido");
 }

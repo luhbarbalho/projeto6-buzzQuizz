@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="./css/stylePage4.css">
     <link rel="stylesheet" type="text/css" href="./css/stylePage5.css">
     <link rel="stylesheet" type="text/css" href="./css/stylePage6.css">
+    <link rel="stylesheet" type="text/css" href="./css/styleGeral.css">
     <title>BuzzQuizz</title>
 </head>
 <body>
@@ -19,20 +20,19 @@
         <h1>BuzzQuiz</h1>
     </header>
 
-    <main class="displayNone">
+    <main>
         <div class="container">
-
             <div class="nao-tem-quizz">
 
                 <p>Você não criou nenhum quizz ainda :(</p>
-                <button>Criar Quizz</button>
+                <button onclick="criarQuizz()">Criar Quizz</button>
 
             </div>
-            <div class="meus-quizzes">
+            <div class="meus-quizzes escondido">
 
                     <div class="titulinho">
                         <p>Seus Quizzes</p><!--vai aparecer apenas se já tiver algum quizz-->
-                        <button><ion-icon name="add-circle"></ion-icon></button>
+                        <button onclick="criarQuizz()"><ion-icon name="add-circle"></ion-icon></button>
                     </div>
 
                     <div class="meusQuizzesJuntos">
@@ -104,7 +104,7 @@
         </div>
     </main>
 
-    <section class="containerQuizz displayNone">
+    <section class="containerQuizz escondido">
         <div class="titulozao">
             <div class="imgQuizz">
                 <h2>O quanto de Senhor dos Anéis você sabe?</h2>
@@ -138,7 +138,8 @@
         </div>
     </section>
 
-    <section class="comeceComeco">
+
+    <section class="comeceComeco escondido">
 
         <div class="comeceComecoCentral">
 
@@ -151,13 +152,14 @@
                 <input type="text" class="comeco-inputs quantNiveis" placeholder="Quantidade de níveis do quizz">
             </div>
 
-            <button onclick="conferenciaBasica()" class="btn">Prosseguir pra criar perguntas</button>
+            <button class="btn" onclick="conferenciaBasica()">Prosseguir pra criar perguntas</button>
 
         </div>
 
     </section>
 
-    <section class="criePerguntas displayNone">
+    <section class="criePerguntas escondido">
+
         <div class="criePerguntasCentral">
 
             <h3>Crie suas perguntas</h3>
@@ -201,12 +203,12 @@
                 <button><ion-icon name="create-outline"></ion-icon></button>
             </div>
 
-            <button onclick="conferenciaPergunta()" class="btn">Prosseguir pra criar níveis</button>
+            <button class="btn" onclick="conferenciaPergunta()">Prosseguir pra criar níveis</button>
 
         </div>
     </section>
 
-    <section class="decidaNiveis displayNone">
+    <section class="decidaNiveis escondido">
         <div class="decidaNiveisCentral">
 
             <h3>Agora, decida os níveis</h3>
@@ -237,7 +239,7 @@
 
     </section>
 
-    <section class="quizzPronto displayNone">
+    <section class="finalizarQuizz escondido">
         <div class="quizzProntoCentral">
 
             <h3>Seu quizz está pronto!</h3>
@@ -248,11 +250,11 @@
 
             <button class="btn">Finalizar Quizz</button>
 
-            <button class="voltarbtn">Voltar para Home</button>
-
+            <button class="voltarbtn" onclick="voltarHome()">Voltar para Home</button>
+        </div>
     </section>
 
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script src="./js/scriptPerguntas.js"></script>
+    <script src="./js/Script.js"></script>
 </body>
 </html> 
