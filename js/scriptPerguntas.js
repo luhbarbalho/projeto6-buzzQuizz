@@ -20,8 +20,8 @@ function conferenciaBasica() {
         basicoCerto += 1;
     }
     if (basicoCerto == 4) {
-        document.querySelector(".comeceComeco").classList.add("displayNone");
-        document.querySelector(".criePerguntas").classList.remove("displayNone");
+        document.querySelector(".comeceComeco").classList.add("escondido");
+        document.querySelector(".criePerguntas").classList.remove("escondido");
     } if (basicoCerto < 4) {
         alert("Tem alguma informação errada aí!");
     }
@@ -54,8 +54,8 @@ function conferenciaPergunta() {
         perguntaCerto += 1;
     }
     if (perguntaCerto == 4) {
-        document.querySelector(".comeceComeco").classList.add("displayNone");
-        document.querySelector(".criePerguntas").classList.remove("displayNone");
+        document.querySelector(".comeceComeco").classList.add("escondido");
+        document.querySelector(".criePerguntas").classList.remove("escondido");
     } if (perguntaCerto < 4) {
         alert("Tem alguma informação errada aí!");
     }
