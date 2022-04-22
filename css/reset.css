@@ -1,3 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,500;1,700;1,900&display=swap');
+
+* {
+    box-sizing: border-box;
+    font-family: Roboto, sans-serif;
+    font-weight: 400;
+}
+
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -25,7 +34,17 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
+    margin: 0;
+    font-family: Roboto, sans-serif;
+    background-color: #FAFAFA;
 }
 ol, ul {
 	list-style: none;
+}
+body::-webkit-scrollbar  {
+    display: none; /*Chrome, Safari and Opera */
+}
+body {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
