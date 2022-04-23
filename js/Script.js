@@ -23,7 +23,7 @@ function conferenciaBasica() {
 
     if ((tituloQuizz.length >= 20) && (tituloQuizz.length <= 65)){
         basicoCerto += 1;
-    } if (typeof urlQuizz == 'string') { // AJEITAR O CÓDIGO PARA TESTAR URL.
+    } if (URL(urlQuizz) === true) {
         basicoCerto += 1;
     } if (parseInt(quantPerguntas) >= 3) {
         basicoCerto += 1;
@@ -36,6 +36,8 @@ function conferenciaBasica() {
     } if (basicoCerto < 4) {
         alert("Tem alguma informação errada aí!");
     }
+
+
 }
 
 
@@ -43,7 +45,7 @@ function conferenciaBasica() {
 
 function conferenciaPergunta() {
 
-    perguntaCerto = 0
+    perguntaCerto = 0;
 
     const perguntaInput = document.querySelector(".perguntaInput").value;
     const perguntaCor = document.querySelector(".perguntaCor").value;
@@ -58,38 +60,61 @@ function conferenciaPergunta() {
     const URLrespostaIncorreta3 = document.querySelector(".URLrespostaIncorreta3").value;
 
 
-    if ((perguntaInput.length >= 20) && (typeof perguntaInput == 'string')){
+    if (perguntaInput.length >= 20) {
         perguntaCerto += 2;
-    } if (typeof perguntaCor == 'string') { // AJEITAR O CÓDIGO PARA TESTAR #hexacdecimal.
+    } if (hexadecimal(perguntaCor) === true) {
         perguntaCerto += 2;
-    } if ((typeof respostaCorreta == 'string')&&(respostaCorreta !== " ")) {
-        perguntaCerto += 2;
-    } if (typeof URLrespostaCorreta == 'string') {// AJEITAR O CÓDIGO PARA TESTAR URL.
-        perguntaCerto += 2;
-    } if ((typeof respostaIncorreta1 == 'string')&&(respostaIncorreta1 !== " ")) {
-        perguntaCerto += 2;
-    } if (typeof URLrespostaIncorreta1 == 'string') {// AJEITAR O CÓDIGO PARA TESTAR URL.
-        perguntaCerto += 2;
-    } if ((typeof respostaIncorreta2 == 'string')&&(respostaIncorreta2 !== " ")) {
-        perguntaCerto += 1;
-    } if (typeof URLrespostaIncorreta2 == 'string') {// AJEITAR O CÓDIGO PARA TESTAR URL.
-        perguntaCerto += 1;
-    } if ((typeof respostaIncorreta3 == 'string')&&(respostaIncorreta3 !== " ")) {
-        perguntaCerto += 1;
-    } if (typeof URLrespostaIncorreta3 == 'string') {// AJEITAR O CÓDIGO PARA TESTAR URL.
-        perguntaCerto += 1;
-    }
+    } if ((respostaCorreta).length !== 0) {
+        perguntaCerto += 3;
+    } if (URL(URLrespostaCorreta) === true) {
+        perguntaCerto += 3;
+    } if ((respostaIncorreta1).length !== 0) {
+        perguntaCerto += 4;
+    } if (URL(URLrespostaIncorreta1) === true) {
+        perguntaCerto += 4;
+    } if ((respostaIncorreta2).length !== 0) {
+        perguntaCerto += 0.25;
+    } if (URL(URLrespostaIncorreta2) === true) {
+        perguntaCerto += 0.25;
+    } if ((respostaIncorreta3).length !== 0) {
+        perguntaCerto += 0.25;
+    } if (URL(URLrespostaIncorreta3) === true) {
+        perguntaCerto += 0.25;
+    };
 
+    console.log(perguntaCerto);
+
+    function hexadecimal(teste) {
+
+        regexp = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/g;
+        if (regexp.test(teste)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     
 
-    if (perguntaCerto >= 12) {
+
+    if (perguntaCerto >= 18) {
         document.querySelector(".criePerguntas").classList.add("escondido");
         document.querySelector(".decidaNiveis").classList.remove("escondido");
-    } if (perguntaCerto < 12) {
+    } if (perguntaCerto < 18) {
         alert("Tem alguma informação errada aí!");
     }
 }
 
+
+
+function URL(testeURL) {
+
+    regexp = (/(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/);
+    if (regexp.test(testeURL)) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 
 
@@ -108,7 +133,7 @@ function conferenciaNiveis() {
         nivelCerto += 1;
     } if ((parseInt(acerto) >= 0) && (parseInt(acerto) <= 100)) {
         nivelCerto += 1;
-    } if (typeof urlimg == 'string') {// AJEITAR O CÓDIGO PARA TESTAR URL.
+    } if (URL(urlimg) === true) {
         nivelCerto += 1;
     } if ((descricaoNivel.length >= 30) && (typeof descricaoNivel == 'string')) {
         nivelCerto += 1;
