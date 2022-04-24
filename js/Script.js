@@ -5,6 +5,8 @@ let nivelCerto;
 let quantPerguntas;
 let quantNiveis;
 const main = document.querySelector("main");
+const API = "https://mock-api.driven.com.br/api/v6/buzzquizz/";
+let promessaLength;
 
 function criarQuizz() {
     main.classList.add("escondido");
@@ -133,3 +135,92 @@ function voltarHome() {
     document.querySelector(".nao-tem-quizz").classList.add("escondido");
     document.querySelector(".meus-quizzes").classList.remove("escondido");
 }
+
+function pegarTodosQuizzes() {
+    const promessa = axios.get(`${API}quizzes`);
+    promessa.then(displayTodosQuizzes);
+    promessa.catch(erroGet);
+}
+
+function displayTodosQuizzes(resposta) {
+    const quizzesCriadosJuntos = document.querySelector(".quizzes-criadosJuntos");
+    for(let i = 0; i < resposta.data.length; i++){
+        quizzesCriadosJuntos.innerHTML += `
+        <div class="quizzPronto" id="${resposta.data[i].id}" onclick="abrirQuizz(this)">
+            <div class="img-quizz">
+                <p>${resposta.data[i].title}</p>
+            </div>
+        </div>
+        `
+    }
+}
+
+function erroGet(erro) {
+    console.log("Status code: " + erro.response.status); 
+    console.log("Mensagem de erro: " + erro.response.data);
+    pegarTodosQuizzes()
+}
+
+function abrirQuizz(elemento) {
+    main.classList.add("escondido");
+    document.querySelector(".containerQuizz").classList.remove("escondido");
+    elemento.classList.add("escolhido")
+
+    const listaQuizz = axios.get(`${API}quizzes`);
+    listaQuizz.then(paginaQuizz);
+}
+
+function paginaQuizz(retorno) {
+    let Quizz;
+    const escolhido = Number(document.querySelector(".escolhido").id)
+    for(let i = 0; i < retorno.data.length; i++){
+        if(retorno.data[i].id === escolhido){
+            Quizz = retorno.data[i];
+        }
+    }
+
+    const tituloQuizz = document.querySelector(".imgQuizz h2");
+    tituloQuizz.innerHTML = `${Quizz.title}`;
+
+    const tituloPergunta = document.querySelector(".tituloPergunta");
+    tituloPergunta.innerHTML = `${Quizz.questions.title}`;
+
+    const perguntas = document.querySelector(".perguntaDiv");
+    for(let i = 0; i < Quizz.questions.length; i++){
+        if(i === 0){
+            perguntas.innerHTML += `
+            <div class="quadrinho visivel">
+                <div class="tituloPergunta">
+                    <h4>${Quizz.questions.title}</h4>
+                </div>
+                <div class="opcoes-resposta">
+                </div>
+            </div>
+            `
+        }
+        else {
+            perguntas.innerHTML += `
+            <div class="quadrinho escondido">
+                <div class="tituloPergunta">
+                    <h4>${Quizz.questions.title}</h4>
+                </div>
+                <div class="opcoes-resposta">
+                </div>
+            </div>
+            `
+        }
+
+    }
+
+    const opcoes = document.querySelector(".perguntaDiv .quadrinho.visivel .opcoes-resposta");
+    //for(let i = 0; i < Quizz.questions.answers.length; i++){
+    //   opcoes.innerHTML += `
+    //   <div class="opcao" onclick="verificarResposta">
+    //       <img src=" ${Quizz.questions.answers[i].image}" alt="imagemResposta">
+    //       <p> ${Quizz.questions.answers[i].text}</p>
+    //  </div>
+    //    `
+    //}
+}
+
+pegarTodosQuizzes()
