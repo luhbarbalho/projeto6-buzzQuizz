@@ -4,15 +4,148 @@ let perguntaCerto;
 let nivelCerto;
 let quantPerguntas;
 let quantNiveis;
+let quizzes = [];
+let quizzEscolhido;
+let divQuizz;
+
 const main = document.querySelector("main");
 const API = "https://mock-api.driven.com.br/api/v6/buzzquizz/";
 let promessaLength;
+
+
+/////////////////////////////UPLOAD DE LIB AXIOS QUIZZES/////////////////////////////
+uploadQuizzes()
+
+
+
+function uploadQuizzes() {
+    const promise = axios.get(`${API}`);
+    promise.then(carregarAxios);
+    promise.catch(function () {
+        console.log("Erro do upload dos Quizzes");
+    });
+    
+    function carregarAxios (response) {
+        quizzes = response.data;
+        renderizarTodosQuizzes();
+    }
+}
+
+//setInterval(uploadQuizzes, 30000);
+
+
+///////////////////////////// RENDERIZAÇÃO DOS QUIZZES /////////////////////////////
+
+function renderizarTodosQuizzes() {
+
+    let todosQuizzes = document.querySelector(".quizzes-criadosJuntos");
+    todosQuizzes.innerHTML = "";
+
+    for(let i=0 ; i < quizzes.length ; i ++) {
+        
+
+
+        todosQuizzes.innerHTML += `
+            <div class="quizzPronto" id="${quizzes[i].id}" onclick="escolhaQuizz(this.id)">
+                <div style="background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.9)),url(${quizzes[i].image});" class="imgquizz">
+                <p class="tagQuizz">${quizzes[i].title}</p>
+                <div>
+            </div>
+        `;
+
+    }
+
+}
+
+
+///////////////////////////// ESCOLHER UM QUIZZ /////////////////////////////
+
+
+function escolhaQuizz(elemento) {
+
+    main.classList.add("escondido");
+    document.querySelector(".containerQuizz").classList.remove("escondido");
+
+    //element.querySelector(".quizzPronto");
+    
+    const promise = axios.get(`https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes/${elemento}`);
+    promise.then(carregarQuizz);
+    promise.catch(function () {
+        console.log("Erro do upload do Quizz");
+    });
+    
+    function carregarQuizz (response) {
+        quizzEscolhido = response.data;
+        console.log(quizzEscolhido);
+        renderizarQuizz();
+    }
+}
+
+function renderizarQuizz() {
+
+    let titulozao = document.querySelector(".titulozao");
+
+    titulozao.innerHTML = `
+    <div style="background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.9)),url(${quizzEscolhido.image});" class="imgQuizz">
+        <h2>${quizzEscolhido.title}</h2>
+    </div>
+    `;
+
+        divQuizz = document.querySelector(".quadrinho");
+
+    for (let i = 0; i < (quizzEscolhido.questions).length; i++) {
+        
+        divQuizz.innerHTML = `
+            <div style="background-color:${quizzEscolhido.questions[i].color};" class="tituloPergunta">
+                <h4>${quizzEscolhido.questions[i].title}</h4>
+            </div>
+            <div class="opcoes-resposta">
+        `;
+
+        quizzEscolhido.questions[i].answers.sort(sorteador);
+        for (let x = 0; x < (quizzEscolhido.questions[i].answers).length; x++) {
+            divQuizz.innerHTML += `
+                    <div id="${quizzEscolhido.questions[i].answers[x].isCorrectAnswer}" class="opcao" onclick="checaOpcao(this)">
+                        <img src="${quizzEscolhido.questions[i].answers[x].image}"/>
+                        <p class="checkarOpcao">${quizzEscolhido.questions[i].answers[x].text}</p>
+                    </div>
+                </div>    
+            </div>`;
+        }
+                
+    }           
+}
+
+function sorteador() { 
+    return Math.random() - 0.5; 
+}
+
+///////////////////////////// CHECA SE A OPCAO SELECIONADA É CORRETA /////////////////////////////
+//ESTAVA AQUI NESSA PARTE, MAS QUE COMBINAMOS Q VC IA FAZER AGORA.
+
+function checaOpcao(elemento) {
+    let gugu = elemento.querySelector(".checkarOpcao")    
+
+
+
+
+    if (elemento.id === "true") {
+        gugu.classList.add("verdinho");
+        //gugu.classList.add(".verdinho");
+    } else {
+        gugu.classList.add("vermelhinho");
+    }
+}
+
+
+///////////////////////////// CLICAR PARA CRIAR NOVO QUIZZ /////////////////////////////
 
 function criarQuizz() {
     main.classList.add("escondido");
     document.querySelector(".comeceComeco").classList.remove("escondido");
 }
 
+///////////////////////////// VALIDAR INFORMAÇÃO BÁSICA DO QUIZZ /////////////////////////////
 
 function conferenciaBasica() {
     basicoCerto = 0;
@@ -25,7 +158,7 @@ function conferenciaBasica() {
 
     if ((tituloQuizz.length >= 20) && (tituloQuizz.length <= 65)){
         basicoCerto += 1;
-    } if (typeof urlQuizz == 'string') { // AJEITAR O CÓDIGO PARA TESTAR URL.
+    } if (URL(urlQuizz) === true) {
         basicoCerto += 1;
     } if (parseInt(quantPerguntas) >= 3) {
         basicoCerto += 1;
@@ -38,14 +171,16 @@ function conferenciaBasica() {
     } if (basicoCerto < 4) {
         alert("Tem alguma informação errada aí!");
     }
+
+
 }
 
 
-
+///////////////////////////// VALIDAR CRIAÇÃO DE PERGUNTAS DO QUIZZ /////////////////////////////
 
 function conferenciaPergunta() {
 
-    perguntaCerto = 0
+    perguntaCerto = 0;
 
     const perguntaInput = document.querySelector(".perguntaInput").value;
     const perguntaCor = document.querySelector(".perguntaCor").value;
@@ -60,41 +195,64 @@ function conferenciaPergunta() {
     const URLrespostaIncorreta3 = document.querySelector(".URLrespostaIncorreta3").value;
 
 
-    if ((perguntaInput.length >= 20) && (typeof perguntaInput == 'string')){
+    if (perguntaInput.length >= 20) {
         perguntaCerto += 2;
-    } if (typeof perguntaCor == 'string') { // AJEITAR O CÓDIGO PARA TESTAR #hexacdecimal.
+    } if (hexadecimal(perguntaCor) === true) {
         perguntaCerto += 2;
-    } if ((typeof respostaCorreta == 'string')&&(respostaCorreta !== " ")) {
-        perguntaCerto += 2;
-    } if (typeof URLrespostaCorreta == 'string') {// AJEITAR O CÓDIGO PARA TESTAR URL.
-        perguntaCerto += 2;
-    } if ((typeof respostaIncorreta1 == 'string')&&(respostaIncorreta1 !== " ")) {
-        perguntaCerto += 2;
-    } if (typeof URLrespostaIncorreta1 == 'string') {// AJEITAR O CÓDIGO PARA TESTAR URL.
-        perguntaCerto += 2;
-    } if ((typeof respostaIncorreta2 == 'string')&&(respostaIncorreta2 !== " ")) {
-        perguntaCerto += 1;
-    } if (typeof URLrespostaIncorreta2 == 'string') {// AJEITAR O CÓDIGO PARA TESTAR URL.
-        perguntaCerto += 1;
-    } if ((typeof respostaIncorreta3 == 'string')&&(respostaIncorreta3 !== " ")) {
-        perguntaCerto += 1;
-    } if (typeof URLrespostaIncorreta3 == 'string') {// AJEITAR O CÓDIGO PARA TESTAR URL.
-        perguntaCerto += 1;
-    }
+    } if ((respostaCorreta).length !== 0) {
+        perguntaCerto += 3;
+    } if (URL(URLrespostaCorreta) === true) {
+        perguntaCerto += 3;
+    } if ((respostaIncorreta1).length !== 0) {
+        perguntaCerto += 4;
+    } if (URL(URLrespostaIncorreta1) === true) {
+        perguntaCerto += 4;
+    } if ((respostaIncorreta2).length !== 0) {
+        perguntaCerto += 0.25;
+    } if (URL(URLrespostaIncorreta2) === true) {
+        perguntaCerto += 0.25;
+    } if ((respostaIncorreta3).length !== 0) {
+        perguntaCerto += 0.25;
+    } if (URL(URLrespostaIncorreta3) === true) {
+        perguntaCerto += 0.25;
+    };
 
+    console.log(perguntaCerto);
+
+    function hexadecimal(teste) {
+
+        regexp = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/g;
+        if (regexp.test(teste)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     
 
-    if (perguntaCerto >= 12) {
+
+    if (perguntaCerto >= 18) {
         document.querySelector(".criePerguntas").classList.add("escondido");
         document.querySelector(".decidaNiveis").classList.remove("escondido");
-    } if (perguntaCerto < 12) {
+    } if (perguntaCerto < 18) {
         alert("Tem alguma informação errada aí!");
     }
 }
 
 
 
+function URL(testeURL) {
 
+    regexp = (/(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/);
+    if (regexp.test(testeURL)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+///////////////////////////// VALIDAR CRIAÇÃO DE NÍVEIS DO QUIZZ /////////////////////////////
 
 
 function conferenciaNiveis() {
@@ -110,7 +268,7 @@ function conferenciaNiveis() {
         nivelCerto += 1;
     } if ((parseInt(acerto) >= 0) && (parseInt(acerto) <= 100)) {
         nivelCerto += 1;
-    } if (typeof urlimg == 'string') {// AJEITAR O CÓDIGO PARA TESTAR URL.
+    } if (URL(urlimg) === true) {
         nivelCerto += 1;
     } if ((descricaoNivel.length >= 30) && (typeof descricaoNivel == 'string')) {
         nivelCerto += 1;
@@ -126,6 +284,8 @@ function conferenciaNiveis() {
 
 
 }
+
+///////////////////////////// VOLTAR PARA HOME COM QUIZZ FEITO /////////////////////////////
 
 
 function voltarHome() {
