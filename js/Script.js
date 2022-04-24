@@ -1,16 +1,150 @@
+const API = "https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes/";
 let numeroQuizzes = 0;
 let basicoCerto;
 let perguntaCerto;
 let nivelCerto;
 let quantPerguntas;
 let quantNiveis;
+let quizzes = [];
+let quizzEscolhido;
+let divQuizz;
+
 const main = document.querySelector("main");
+
+
+/////////////////////////////UPLOAD DE LIB AXIOS QUIZZES/////////////////////////////
+uploadQuizzes()
+
+
+
+function uploadQuizzes() {
+    const promise = axios.get(`${API}`);
+    promise.then(carregarAxios);
+    promise.catch(function () {
+        console.log("Erro do upload dos Quizzes");
+    });
+    
+    function carregarAxios (response) {
+        quizzes = response.data;
+        renderizarTodosQuizzes();
+    }
+}
+
+//setInterval(uploadQuizzes, 30000);
+
+
+///////////////////////////// RENDERIZAÇÃO DOS QUIZZES /////////////////////////////
+
+function renderizarTodosQuizzes() {
+
+    let todosQuizzes = document.querySelector(".quizzes-criadosJuntos");
+    todosQuizzes.innerHTML = "";
+
+    for(let i=0 ; i < quizzes.length ; i ++) {
+        
+
+
+        todosQuizzes.innerHTML += `
+            <div class="quizzPronto" id="${quizzes[i].id}" onclick="escolhaQuizz(this.id)">
+                <div style="background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.9)),url(${quizzes[i].image});" class="imgquizz">
+                <p class="tagQuizz">${quizzes[i].title}</p>
+                <div>
+            </div>
+        `;
+
+    }
+
+}
+
+
+///////////////////////////// ESCOLHER UM QUIZZ /////////////////////////////
+
+
+function escolhaQuizz(elemento) {
+
+    main.classList.add("escondido");
+    document.querySelector(".containerQuizz").classList.remove("escondido");
+
+    //element.querySelector(".quizzPronto");
+    
+    const promise = axios.get(`https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes/${elemento}`);
+    promise.then(carregarQuizz);
+    promise.catch(function () {
+        console.log("Erro do upload do Quizz");
+    });
+    
+    function carregarQuizz (response) {
+        quizzEscolhido = response.data;
+        console.log(quizzEscolhido);
+        renderizarQuizz();
+    }
+}
+
+function renderizarQuizz() {
+
+    let titulozao = document.querySelector(".titulozao");
+
+    titulozao.innerHTML = `
+    <div style="background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.9)),url(${quizzEscolhido.image});" class="imgQuizz">
+        <h2>${quizzEscolhido.title}</h2>
+    </div>
+    `;
+
+        divQuizz = document.querySelector(".quadrinho");
+
+    for (let i = 0; i < (quizzEscolhido.questions).length; i++) {
+        
+        divQuizz.innerHTML = `
+            <div style="background-color:${quizzEscolhido.questions[i].color};" class="tituloPergunta">
+                <h4>${quizzEscolhido.questions[i].title}</h4>
+            </div>
+            <div class="opcoes-resposta">
+        `;
+
+        quizzEscolhido.questions[i].answers.sort(sorteador);
+        for (let x = 0; x < (quizzEscolhido.questions[i].answers).length; x++) {
+            divQuizz.innerHTML += `
+                    <div id="${quizzEscolhido.questions[i].answers[x].isCorrectAnswer}" class="opcao" onclick="checaOpcao(this)">
+                        <img src="${quizzEscolhido.questions[i].answers[x].image}"/>
+                        <p class="checkarOpcao">${quizzEscolhido.questions[i].answers[x].text}</p>
+                    </div>
+                </div>    
+            </div>`;
+        }
+                
+    }           
+}
+
+function sorteador() { 
+    return Math.random() - 0.5; 
+}
+
+///////////////////////////// CHECA SE A OPCAO SELECIONADA É CORRETA /////////////////////////////
+//ESTAVA AQUI NESSA PARTE, MAS QUE COMBINAMOS Q VC IA FAZER AGORA.
+
+function checaOpcao(elemento) {
+    let gugu = elemento.querySelector(".checkarOpcao")    
+
+
+
+
+    if (elemento.id === "true") {
+        gugu.classList.add("verdinho");
+        //gugu.classList.add(".verdinho");
+    } else {
+        gugu.classList.add("vermelhinho");
+    }
+}
+
+
+///////////////////////////// CLICAR PARA CRIAR NOVO QUIZZ /////////////////////////////
 
 function criarQuizz() {
     main.classList.add("escondido");
     document.querySelector(".comeceComeco").classList.remove("escondido");
 }
 
+///////////////////////////// VALIDAR INFORMAÇÃO BÁSICA DO QUIZZ /////////////////////////////
 
 function conferenciaBasica() {
     basicoCerto = 0;
@@ -41,7 +175,7 @@ function conferenciaBasica() {
 }
 
 
-
+///////////////////////////// VALIDAR CRIAÇÃO DE PERGUNTAS DO QUIZZ /////////////////////////////
 
 function conferenciaPergunta() {
 
@@ -117,7 +251,7 @@ function URL(testeURL) {
 }
 
 
-
+///////////////////////////// VALIDAR CRIAÇÃO DE NÍVEIS DO QUIZZ /////////////////////////////
 
 
 function conferenciaNiveis() {
@@ -149,6 +283,8 @@ function conferenciaNiveis() {
 
 
 }
+
+///////////////////////////// VOLTAR PARA HOME COM QUIZZ FEITO /////////////////////////////
 
 
 function voltarHome() {
