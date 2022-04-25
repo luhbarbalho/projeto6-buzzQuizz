@@ -7,6 +7,10 @@ let quantNiveis;
 let quizzes = [];
 let quizzEscolhido;
 
+let questaoAcertada;
+let questaoFeita = 0;
+let numeroQuestoes;
+
 const main = document.querySelector("main");
 const API = "https://mock-api.driven.com.br/api/v6/buzzquizz/";
 let promessaLength;
@@ -79,6 +83,10 @@ function renderizarQuizz() {
 
     const divQuizz = document.querySelector(".quadrinho");
 
+    /////////////////////////////////////////////////////// PARA AJUDAR A RESOLVER O QUIZZ ////////////////////////////////////////////////////////////////////////
+    numeroQuestoes = (quizzEscolhido.questions).length;
+    /////////////////////////////////////////////////////// PARA AJUDAR A RESOLVER O QUIZZ ////////////////////////////////////////////////////////////////////////
+
     for (let i = 0; i < (quizzEscolhido.questions).length; i++) {
         
         divQuizz.innerHTML = `
@@ -91,7 +99,7 @@ function renderizarQuizz() {
         quizzEscolhido.questions[i].answers.sort(sorteador);
         for (let x = 0; x < (quizzEscolhido.questions[i].answers).length; x++) {
             divQuizz.innerHTML += `
-                    <div id="${quizzEscolhido.questions[i].answers[x].isCorrectAnswer}" class="opcao" onclick="checaOpcao(this)">
+                    <div id="${quizzEscolhido.questions[i].answers[x].isCorrectAnswer}" class="opcao unclicked" onclick="checaOpcao(this)">
                         <img src="${quizzEscolhido.questions[i].answers[x].image}"/>
                         <p class="checkarOpcao">${quizzEscolhido.questions[i].answers[x].text}</p>
                     </div>
@@ -110,16 +118,40 @@ function sorteador() {
 //ESTAVA AQUI NESSA PARTE, MAS QUE COMBINAMOS Q VC IA FAZER AGORA.
 
 function checaOpcao(elemento) {
-    let gugu = elemento.querySelector(".checkarOpcao")    
+    const clicado = elemento.querySelector(".checkarOpcao");
+    clicado.classList.add("clicado")    
+    console.log("clicado.classList = " + (clicado.parentNode).classList)
+    
+    const esbranquiçar = (clicado.parentNode).parentNode;
+    console.log("esbranquiçar = " + (clicado.parentNode).parentNode)
 
+    for (let i = 0; i < esbranquiçar.children.length; i++) {
+        let item = esbranquiçar.querySelector(".opcao.unclicked");
+        console.log("item = " + item)
+        let itemEscolhido = item.querySelector(".clicado");
+        item.classList.remove("unclicked");
+        item.removeAttribute("onclick");
 
+        if (item.id === "true") {
+            item.classList.add("verdinho");
+        } else {
+            item.classList.add("vermelhinho");
+        }
 
+        if (itemEscolhido === null){
+            item.classList.add("esbranquiçado")
+        }
+    }
 
     if (elemento.id === "true") {
-        gugu.classList.add("verdinho");
-        //gugu.classList.add(".verdinho");
-    } else {
-        gugu.classList.add("vermelhinho");
+        questaoAcertada++;
+    }
+    questaoFeita++;
+
+    if(questaoFeita === numeroQuestoes) {
+        mostrarNivel()
+    }else {
+        proximaQuestao()
     }
 }
 
