@@ -84,7 +84,6 @@ function renderizarQuizz() {
     const divQuizz = document.querySelector(".containerQuizz");
 
     numeroQuestoes = (quizzEscolhido.questions).length;
-    console.log(numeroQuestoes)
     /////////////////////////////////////////////////////// PARA AJUDAR A RESOLVER O QUIZZ ////////////////////////////////////////////////////////////////////////
 
     for (let i = 0; i < (quizzEscolhido.questions).length; i++) {
@@ -120,7 +119,6 @@ function renderizarQuizz() {
 function renderizarOpcoes(i) {
     
     let opcoes = document.querySelector(".opcoes-resposta.temporaria")
-    console.log(opcoes)
 
     quizzEscolhido.questions[i].answers.sort(sorteador);
     for (let x = 0; x < (quizzEscolhido.questions[i].answers).length; x++) {
@@ -133,7 +131,6 @@ function renderizarOpcoes(i) {
     }
     
     opcoes.classList.remove("temporaria")
-    console.log(opcoes.classList)
 }
 
 function sorteador() { 
@@ -186,7 +183,7 @@ function mostrarNivel() {
 function proximaQuestao() {
     const proximo = document.querySelector(".proximo");
     proximo.classList.remove("proximo", "escondido")
-    proximo.querySelector("opcoes-resposta").scrollIntoView();
+    proximo.querySelector(".opcoes-resposta").scrollIntoView();
 }
 
 ///////////////////////////// CLICAR PARA CRIAR NOVO QUIZZ /////////////////////////////
