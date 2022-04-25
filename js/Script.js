@@ -81,33 +81,60 @@ function renderizarQuizz() {
     </div>
     `;
 
-    const divQuizz = document.querySelector(".quadrinho");
+    const divQuizz = document.querySelector(".containerQuizz");
 
     /////////////////////////////////////////////////////// PARA AJUDAR A RESOLVER O QUIZZ ////////////////////////////////////////////////////////////////////////
     numeroQuestoes = (quizzEscolhido.questions).length;
+    console.log(numeroQuestoes)
     /////////////////////////////////////////////////////// PARA AJUDAR A RESOLVER O QUIZZ ////////////////////////////////////////////////////////////////////////
 
     for (let i = 0; i < (quizzEscolhido.questions).length; i++) {
-        
-        divQuizz.innerHTML = `
-            <div style="background-color:${quizzEscolhido.questions[i].color};" class="tituloPergunta">
-                <h4>${quizzEscolhido.questions[i].title}</h4>
-            </div>
-            <div class="opcoes-resposta">
-        `;
-
-        quizzEscolhido.questions[i].answers.sort(sorteador);
-        for (let x = 0; x < (quizzEscolhido.questions[i].answers).length; x++) {
+        if(i === 0){
             divQuizz.innerHTML += `
-                    <div id="${quizzEscolhido.questions[i].answers[x].isCorrectAnswer}" class="opcao unclicked" onclick="checaOpcao(this)">
-                        <img src="${quizzEscolhido.questions[i].answers[x].image}"/>
-                        <p class="checkarOpcao">${quizzEscolhido.questions[i].answers[x].text}</p>
+            <div class="perguntaDiv">
+                <div class="quadrinho">
+                    <div style="background-color:${quizzEscolhido.questions[i].color};" class="tituloPergunta">
+                         <h4>${quizzEscolhido.questions[i].title}</h4>
                     </div>
-                </div>    
-            </div>`;
+                    <div class="opcoes-resposta temporaria"></div>
+                 </div>
+            </div>
+        `;
         }
-                
+        else {
+            divQuizz.innerHTML += `
+            <div class="perguntaDiv escondido">
+                <div class="quadrinho">
+                    <div style="background-color:${quizzEscolhido.questions[i].color};" class="tituloPergunta">
+                         <h4>${quizzEscolhido.questions[i].title}</h4>
+                    </div>
+                    <div class="opcoes-resposta temporaria"></div>
+                 </div>
+            </div>
+        `;
+        }
+
+        renderizarOpcoes(i) 
     }           
+}
+
+function renderizarOpcoes(i) {
+    
+    let opcoes = document.querySelector(".opcoes-resposta.temporaria")
+    console.log(opcoes)
+
+    quizzEscolhido.questions[i].answers.sort(sorteador);
+    for (let x = 0; x < (quizzEscolhido.questions[i].answers).length; x++) {
+        opcoes.innerHTML += `
+            <div id="${quizzEscolhido.questions[i].answers[x].isCorrectAnswer}" class="opcao unclicked" onclick="checaOpcao(this)">
+                <img src="${quizzEscolhido.questions[i].answers[x].image}"/>
+                <p class="checkarOpcao">${quizzEscolhido.questions[i].answers[x].text}</p>
+            </div>  
+        `;
+    }
+    
+    opcoes.classList.remove("temporaria")
+    console.log(opcoes.classList)
 }
 
 function sorteador() { 
@@ -120,14 +147,11 @@ function sorteador() {
 function checaOpcao(elemento) {
     const clicado = elemento.querySelector(".checkarOpcao");
     clicado.classList.add("clicado")    
-    console.log("clicado.classList = " + (clicado.parentNode).classList)
     
-    const esbranquiçar = (clicado.parentNode).parentNode;
-    console.log("esbranquiçar = " + (clicado.parentNode).parentNode)
+    const esbranquiçar = elemento.parentNode;
 
     for (let i = 0; i < esbranquiçar.children.length; i++) {
         let item = esbranquiçar.querySelector(".opcao.unclicked");
-        console.log("item = " + item)
         let itemEscolhido = item.querySelector(".clicado");
         item.classList.remove("unclicked");
         item.removeAttribute("onclick");
