@@ -1,3 +1,6 @@
 .escondido {
     display: none;
 }
+.esbranquicado {
+    opacity: 0.3;
+}

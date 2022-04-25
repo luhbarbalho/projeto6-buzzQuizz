@@ -61,11 +61,6 @@
     <section class="containerQuizz escondido">
         <div class="titulozao">
         </div>
-        <div class="perguntaDiv">
-            <div class="quadrinho">
-
-            </div>
-        </div>
     </section>
 
 
@@ -94,43 +89,8 @@
 
             <h3>Crie suas perguntas</h3>
 
-            <div class="perguntasInputs">
-                <div class="pergunta">
-                    <p>Pergunta 1</p>
-
-                    <input type="text" class="pergunta-inputs perguntaInput" placeholder="Texto da pergunta">
-                    <input type="text" class="pergunta-inputs perguntaCor" placeholder="Cor de fundo da pergunta">
-                </div>
-
-                <div class="respostas">
-                    <p>Resposta correta</p>
-
-                    <input type="text" class="pergunta-inputs respostaCorreta" placeholder="Resposta correta">
-                    <input type="text" class="pergunta-inputs URLrespostaCorreta" placeholder="URL da imagem">
-                </div>
-                <div class="respostas">
-                    <p>Resposta incorretas</p>
-                    <div class="respostasErro">
-                        <input type="text" class="pergunta-inputs respostaIncorreta1" placeholder="Resposta incorreta 1">
-                        <input type="text" class="pergunta-inputs URLrespostaIncorreta1" placeholder="URL da imagem 1">
-                    </div>
-                    <div class="respostasErro">
-                        <input type="text" class="pergunta-inputs respostaIncorreta2" placeholder="Resposta incorreta 2">
-                        <input type="text" class="pergunta-inputs URLrespostaIncorreta2" placeholder="URL da imagem 2">
-                    </div>
-                    <div class="respostasErro">
-                        <input type="text" class="pergunta-inputs respostaIncorreta3" placeholder="Resposta incorreta 3">
-                        <input type="text" class="pergunta-inputs URLrespostaIncorreta3" placeholder="URL da imagem 3">
-                    </div>
-                </div>
-            </div>
-            <div class="perguntadobrada">
-                <p>Pergunta 2</p>
-                <button><ion-icon name="create-outline"></ion-icon></button>
-            </div>
-            <div class="perguntadobrada">
-                <p>Pergunta 3</p>
-                <button><ion-icon name="create-outline"></ion-icon></button>
+            <div class="quadradoPerguntas">
+                <div class="perguntasInputs"></div>
             </div>
 
             <button class="btn" onclick="conferenciaPergunta()">Prosseguir pra criar níveis</button>
@@ -184,7 +144,9 @@
         </div>
     </section>
 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="./js/Script.js"></script>
 </body>

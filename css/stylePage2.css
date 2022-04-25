@@ -11,7 +11,7 @@
         to bottom,
         rgba(0,0,0, 0.2),
         rgba(0, 0, 0, 0.7)
-        ),url(../media/LOTR-cover.jpeg);
+        ),url(../media/LOTR-cover.jpeg);/*tirar esse background*/
     width: 100vw; 
     height: 227px;
     margin-top: 69px;
