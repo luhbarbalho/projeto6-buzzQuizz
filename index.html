@@ -28,7 +28,7 @@
                 <button onclick="criarQuizz()">Criar Quizz</button>
 
             </div>
-            <div class="meus-quizzes escondido">
+            <div class="meus-quizzes">
 
                 <div class="titulinho">
                     <p>Seus Quizzes</p><!--vai aparecer apenas se já tiver algum quizz-->
@@ -37,9 +37,10 @@
 
                 <div class="meusQuizzesJuntos">
 
-                    <div class="xxxx">
-                        <img class="img-quizz" src="https://guiadoestudante.abril.com.br/wp-content/uploads/sites/4/2010/11/Hogwarts.jpeg?quality=100&strip=info&resize=680,453" alt="">
-                        <p>O quão Potterhead é você?</p>
+                    <div class="quizzPronto">
+                        <div style="background: linear-gradient(to bottom, rgba(150, 150, 150, 0), rgba(0, 0, 0, 0.9)),url(${urlQuizz});" class="imgquizz">
+                            <p class="tituloPronto">${tituloQuizz}</p>
+                        </div>
                     </div>    
 
                 </div>    

@@ -211,25 +211,6 @@ function proximaQuestao() {
 function criarQuizz() {
     main.classList.add("escondido");
     document.querySelector(".comeceComeco").classList.remove("escondido");
-
-
-    ///////////////////////////// CRIAÇÃO DO QUIZZ /////////////////////////////
-    
-    /*document.getElementById("mensagem").value = "";
-    const promise = axios.post(`${API}`, quizzFazendo);
-    promise.then(carregarAxios);
-
-    promise.catch(function () {
-        console.log("Erro do upload dos Quizzes");
-    });
-        
-    function carregarAxios (response) {
-        quizzes = response.data;
-        renderizarTodosQuizzes();
-    }*/
-    
-
-
 }
 
 ///////////////////////////// VALIDAR INFORMAÇÃO BÁSICA DO QUIZZ /////////////////////////////
@@ -242,6 +223,12 @@ function conferenciaBasica() {
     quantPerguntas = document.querySelector(".quantPerguntas").value;
     quantNiveis = document.querySelector(".quantNiveis").value;
 
+    tituloQuizz = 'blibliblibliblibliblibliblibliblibliblibliblibliblibli';
+    urlQuizz = `https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Wizarding_World_of_Harry_Potter_Castle.jpg/800px-Wizarding_World_of_Harry_Potter_Castle.jpg`;
+    quantPerguntas = '3';
+    quantNiveis = '2';//////deletar depois!//////
+
+
 
     if ((tituloQuizz.length >= 20) && (tituloQuizz.length <= 65)){
         basicoCerto += 1;
@@ -253,12 +240,13 @@ function conferenciaBasica() {
         basicoCerto += 1;
     }
     if (basicoCerto == 4) {
-        quizzFazendo = ({
+        quizzFazendo =({
             title: `${tituloQuizz}`,
             image: `${urlQuizz}`,
             questions: [],
             levels: []
         });
+
         console.log(quizzFazendo.questions);
         document.querySelector(".comeceComeco").classList.add("escondido");
         document.querySelector(".criePerguntas").classList.remove("escondido");
@@ -339,6 +327,19 @@ function conferenciaPergunta() {
     URLrespostaIncorreta2 = document.querySelector(".URLrespostaIncorreta2").value;
     respostaIncorreta3 = document.querySelector(".respostaIncorreta3").value;
     URLrespostaIncorreta3 = document.querySelector(".URLrespostaIncorreta3").value;
+
+    perguntaInput = `blablablablablablablablablablablablablablablablablabla`;
+    perguntaCor = `#EC362D`;
+    respostaCorreta = 'certa';
+    URLrespostaCorreta = `https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Wizarding_World_of_Harry_Potter_Castle.jpg/800px-Wizarding_World_of_Harry_Potter_Castle.jpg`;
+
+    respostaIncorreta1 = `errada`;
+    URLrespostaIncorreta1 = `https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Wizarding_World_of_Harry_Potter_Castle.jpg/800px-Wizarding_World_of_Harry_Potter_Castle.jpg`;
+    respostaIncorreta2 = `errada`;
+    URLrespostaIncorreta2 = `https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Wizarding_World_of_Harry_Potter_Castle.jpg/800px-Wizarding_World_of_Harry_Potter_Castle.jpg`;
+    respostaIncorreta3 = `errada`;
+    URLrespostaIncorreta3 = `https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Wizarding_World_of_Harry_Potter_Castle.jpg/800px-Wizarding_World_of_Harry_Potter_Castle.jpg`;
+
     
     if (perguntaInput.length >= 20) {
         perguntaCerto += 2;
@@ -430,6 +431,7 @@ function salvarPerguntasUsuario() {
             isCorrectAnswer: false
             });
         }
+
         console.log(quizzFazendo);
     }
 }
@@ -470,6 +472,10 @@ function conferenciaNiveis() {
     urlimg = document.querySelector(".urlimg").value;
     descricaoNivel = document.querySelector(".descricaoNivel").value;
 
+    tituloNivel = `bleblebleblebleblebleblebleblebleble`;
+    acerto = `20`;
+    urlimg = `https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Wizarding_World_of_Harry_Potter_Castle.jpg/800px-Wizarding_World_of_Harry_Potter_Castle.jpg`;
+    descricaoNivel = `blebleblebleblebleblebleblebleblebleblebleblebleblebleblebleblebleblebleblebleblebleble`;
 
     if ((tituloNivel.length >= 10) && (typeof tituloNivel == 'string')){
         nivelCerto += 1;
@@ -486,6 +492,7 @@ function conferenciaNiveis() {
         salvarNiveisUsuario();
         document.querySelector(".decidaNiveis").classList.add("escondido");
         document.querySelector(".finalizarQuizz").classList.remove("escondido");
+        subindoQuizz()
         carregarTelaFinalizado();
     } if (nivelCerto < 4) {
         alert("Tem alguma informação errada aí! Favor preencher corretamente os campos");
@@ -523,6 +530,40 @@ function carregarTelaFinalizado() {
 
         <button class="voltarbtn" onclick="voltarHome()">Voltar para Home</button>
     `
+}
+
+///////////////////////////// SUBINDO O QUIZZ CRIADO PARA O AXIOS /////////////////////////////
+function subindoQuizz() {
+
+    const promise = axios.post(`${API}quizzes`, quizzFazendo);
+    promise.then(carregarAxios);
+
+    promise.catch(function () {
+        console.log("Erro do upload dos Quizzes");
+    });
+    function carregarAxios (response) {
+    }
+    const carregandoAxios = axios.get(`${API}quizzes/id`);
+    carregandoAxios.then(carregarAxios);
+    
+    function carregarAxios (response) {
+        quizzes = (response.data).id;
+        quizzesUsuario(quizzes)
+        console.log(quizzes);
+    }
+
+}
+
+function quizzesUsuario(quizzes) {
+
+    const listaQuizzesUsuario = [];
+    listaQuizzesUsuario.push(quizzes);
+
+    const dadosLista = JSON.stringify(listaQuizzesUsuario);  // String "[1,2,3]"
+
+    const locStoredString =  localStorage.setItem("ids", dadosLista);
+    console.log(locStoredString);
+    //const locStoredArray = JSON.parse(locStored);  // De volta pra Array [1,2,3]
 }
 
 ///////////////////////////// VOLTAR PARA HOME COM QUIZZ FEITO /////////////////////////////
