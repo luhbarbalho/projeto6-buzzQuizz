@@ -75,7 +75,7 @@ p {
     font-weight: 300;
 }
 
-.nivel {
+.nivelCriacao {
     display: flex;
     flex-direction: column;
     justify-content: center;

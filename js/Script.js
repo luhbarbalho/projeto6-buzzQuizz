@@ -8,6 +8,8 @@ let quantPerguntas;
 let quantNiveis;
 let quizzes = [];
 let quizzEscolhido;
+let quizzCriado = [];
+const listaQuizzesUsuario = [];
 
 let questaoAcertada = 0;
 let questaoFeita = 0;
@@ -145,7 +147,7 @@ function renderizarQuizz() {
     }
 
     divQuizz.innerHTML += `
-    <div class="nivel escondido">
+    <div class="nivelResposta escondido">
         <div class="quadrinho"></div>
     </div>
     <button class="reiniciarQuizz escondido" onclick="reiniciarQuizz()">Reiniciar Quizz</button>
@@ -280,11 +282,6 @@ function conferenciaBasica() {
     quantPerguntas = document.querySelector(".quantPerguntas").value;
     quantNiveis = document.querySelector(".quantNiveis").value;
 
-    tituloQuizz = 'blibliblibliblibliblibliblibliblibliblibliblibliblibli';
-    urlQuizz = `https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Wizarding_World_of_Harry_Potter_Castle.jpg/800px-Wizarding_World_of_Harry_Potter_Castle.jpg`;
-    quantPerguntas = '3';
-    quantNiveis = '2';//////deletar depois!//////
-
 
 
     if ((tituloQuizz.length >= 20) && (tituloQuizz.length <= 65)){
@@ -304,7 +301,6 @@ function conferenciaBasica() {
             levels: []
         });
 
-        console.log(quizzFazendo.questions);
         document.querySelector(".comeceComeco").classList.add("escondido");
         document.querySelector(".criePerguntas").classList.remove("escondido");
         CarregarPerguntas ();
@@ -324,13 +320,11 @@ quadradoPerguntas.innerHTML = "";
             <div class="perguntasInputs">
                 <div class="pergunta">
                 <p>Pergunta ${n}</p>
-
                 <input type="text" class="pergunta-inputs perguntaInput" placeholder="Texto da pergunta">
                 <input type="text" class="pergunta-inputs perguntaCor" placeholder="Cor de fundo da pergunta">
             </div>
             <div class="respostas">
                     <p>Resposta correta</p>
-
                     <input type="text" class="pergunta-inputs respostaCorreta" placeholder="Resposta correta">
                     <input type="text" class="pergunta-inputs URLrespostaCorreta" placeholder="URL da imagem">
                 </div>
@@ -385,18 +379,6 @@ function conferenciaPergunta() {
     respostaIncorreta3 = document.querySelector(".respostaIncorreta3").value;
     URLrespostaIncorreta3 = document.querySelector(".URLrespostaIncorreta3").value;
 
-    perguntaInput = `blablablablablablablablablablablablablablablablablabla`;
-    perguntaCor = `#EC362D`;
-    respostaCorreta = 'certa';
-    URLrespostaCorreta = `https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Wizarding_World_of_Harry_Potter_Castle.jpg/800px-Wizarding_World_of_Harry_Potter_Castle.jpg`;
-
-    respostaIncorreta1 = `errada`;
-    URLrespostaIncorreta1 = `https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Wizarding_World_of_Harry_Potter_Castle.jpg/800px-Wizarding_World_of_Harry_Potter_Castle.jpg`;
-    respostaIncorreta2 = `errada`;
-    URLrespostaIncorreta2 = `https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Wizarding_World_of_Harry_Potter_Castle.jpg/800px-Wizarding_World_of_Harry_Potter_Castle.jpg`;
-    respostaIncorreta3 = `errada`;
-    URLrespostaIncorreta3 = `https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Wizarding_World_of_Harry_Potter_Castle.jpg/800px-Wizarding_World_of_Harry_Potter_Castle.jpg`;
-
     
     if (perguntaInput.length >= 20) {
         perguntaCerto += 2;
@@ -419,8 +401,6 @@ function conferenciaPergunta() {
     } if (URL(URLrespostaIncorreta3) === true) {
         perguntaCerto += 0.25;
     };
-
-    console.log(perguntaCerto);
 
     function hexadecimal(teste) {
 
@@ -488,8 +468,6 @@ function salvarPerguntasUsuario() {
             isCorrectAnswer: false
             });
         }
-
-        console.log(quizzFazendo);
     }
 }
 
@@ -529,10 +507,6 @@ function conferenciaNiveis() {
     urlimg = document.querySelector(".urlimg").value;
     descricaoNivel = document.querySelector(".descricaoNivel").value;
 
-    tituloNivel = `bleblebleblebleblebleblebleblebleble`;
-    acerto = `20`;
-    urlimg = `https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Wizarding_World_of_Harry_Potter_Castle.jpg/800px-Wizarding_World_of_Harry_Potter_Castle.jpg`;
-    descricaoNivel = `blebleblebleblebleblebleblebleblebleblebleblebleblebleblebleblebleblebleblebleblebleble`;
 
     if ((tituloNivel.length >= 10) && (typeof tituloNivel == 'string')){
         nivelCerto += 1;
@@ -567,7 +541,6 @@ function salvarNiveisUsuario() {
             minValue: `${acerto}`
         });
     }
-    console.log(quizzFazendo);
 }
 
 
@@ -576,15 +549,11 @@ function carregarTelaFinalizado() {
 
     const quizzPronto = document.querySelector(".finalizarQuizz");
     quizzPronto.innerHTML =`
-
         <h3>Seu quizz está pronto!</h3>
-
         <div style="background: linear-gradient(to bottom, rgba(150, 150, 150, 0), rgba(0, 0, 0, 0.9)),url(${urlQuizz});" class="img-quizz-pronto">
             <p class="tituloPronto">${tituloQuizz}</p>
         </div>
-
         <button class="btn">Finalizar Quizz</button>
-
         <button class="voltarbtn" onclick="voltarHome()">Voltar para Home</button>
     `
 }
@@ -598,29 +567,27 @@ function subindoQuizz() {
     promise.catch(function () {
         console.log("Erro do upload dos Quizzes");
     });
-    function carregarAxios (response) {
-    }
+
     const carregandoAxios = axios.get(`${API}quizzes/id`);
     carregandoAxios.then(carregarAxios);
     
     function carregarAxios (response) {
-        quizzes = (response.data).id;
-        quizzesUsuario(quizzes)
-        console.log(quizzes);
+        quizzCriado = (response.data).id;
+        quizzesUsuario(quizzCriado)
     }
-
 }
 
-function quizzesUsuario(quizzes) {
+function quizzesUsuario(quizzCriado) {
 
-    const listaQuizzesUsuario = [];
-    listaQuizzesUsuario.push(quizzes);
+    const listaQuizzesUsuario = JSON.parse(localStorage.getItem("ids"));
 
-    const dadosLista = JSON.stringify(listaQuizzesUsuario);  // String "[1,2,3]"
+    listaQuizzesUsuario.push(quizzCriado);
 
-    const locStoredString =  localStorage.setItem("ids", dadosLista);
-    console.log(locStoredString);
-    //const locStoredArray = JSON.parse(locStored);  // De volta pra Array [1,2,3]
+    const dadosSerializados = JSON.stringify(listaQuizzesUsuario);
+
+    localStorage.setItem("ids", dadosSerializados);
+    console.log(listaQuizzesUsuario);
+
 }
 
 ///////////////////////////// VOLTAR PARA HOME COM QUIZZ FEITO /////////////////////////////
@@ -633,4 +600,3 @@ function voltarHome() {
     document.querySelector(".nao-tem-quizz").classList.add("escondido");
     document.querySelector(".meus-quizzes").classList.remove("escondido");
 }
-
