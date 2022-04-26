@@ -1,4 +1,3 @@
-let numeroQuizzes = 0;
 let basicoCerto;
 let perguntaCerto;
 let nivelCerto;
@@ -49,13 +48,20 @@ const API = "https://mock-api.driven.com.br/api/v6/buzzquizz/";
 /////////////////////////////UPLOAD DE LIB AXIOS QUIZZES/////////////////////////////
 uploadQuizzes()
 
+function verificarSeusQuizzes() {
+    const ids = localStorage.getItem("ids");
+    const listaQuizzesUsuario = JSON.parse(ids);
+
+    uploadQuizzes()
+}
+
 function uploadQuizzes() {
     const promise = axios.get(`${API}quizzes`);
     promise.then(carregarAxios);
     promise.catch(function () {
         console.log("Erro do upload dos Quizzes");
     });
-    
+
     function carregarAxios (response) {
         quizzes = response.data;
         renderizarTodosQuizzes();
@@ -66,18 +72,44 @@ function uploadQuizzes() {
 
 ///////////////////////////// RENDERIZAÇÃO DOS QUIZZES /////////////////////////////
 function renderizarTodosQuizzes() {
+    if(listaQuizzesUsuario.length === 0){
+        document.querySelector(".meus-quizzes").classList.add("escondido")
+    }
+    else {
+        document.querySelector(".nao-tem-quizz").classList.add("escondido")
+    }
 
     const quizzesCriadosJuntos = document.querySelector(".quizzes-criadosJuntos");
     quizzesCriadosJuntos.innerHTML = "";
 
+    const seusQuizzes = document.querySelector(".meusQuizzesJuntos");
+    seusQuizzes.innerHTML = "";
+
+    let ignorar = false;
+
     for(let i=0 ; i < quizzes.length ; i ++) {
-        quizzesCriadosJuntos.innerHTML += `
+        for(let x = listaQuizzesUsuario.length; x > 0; x--) {
+            if(listaQuizzesUsuario[x-1] === quizzes[i].id){
+                seusQuizzes.innerHTML +=`
+                <div class="quizzPronto" id="${quizzes[i].id}" onclick="escolhaQuizz(this.id)">
+                    <div style="background: linear-gradient(to bottom, rgba(150, 150, 150, 0), rgba(0, 0, 0, 0.9)),url(${quizzes[i].image});" class="imgquizz">
+                        <p class="tituloPronto">${quizzes[i].title}</p>
+                    </div>
+                </div>
+                `
+                ignorar = true;
+            }
+        }
+        if(ignorar === false) {
+            quizzesCriadosJuntos.innerHTML += `
             <div class="quizzPronto" id="${quizzes[i].id}" onclick="escolhaQuizz(this.id)">
                 <div style="background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.9)),url(${quizzes[i].image});" class="imgquizz">
                 <p class="tagQuizz">${quizzes[i].title}</p>
                 <div>
             </div>
         `
+        }
+        ignorar = false;
     }
 
 }
@@ -147,7 +179,7 @@ function renderizarQuizz() {
     }
 
     divQuizz.innerHTML += `
-    <div class="nivelResposta escondido">
+    <div class="nivelResultado escondido">
         <div class="quadrinho"></div>
     </div>
     <button class="reiniciarQuizz escondido" onclick="reiniciarQuizz()">Reiniciar Quizz</button>
@@ -214,8 +246,8 @@ function checaOpcao(elemento) {
 }
 ///////////////////////////// MOSTRAR NIVEL ///////////////////////////////////////////////////
 function mostrarNivel() {
-    const nivel = document.querySelector(".nivel");
-    nivel.classList.remove("escondido");
+    const nivelResultado = document.querySelector(".nivelResultado");
+    nivelResultado.classList.remove("escondido");
 
     const reiniciar = document.querySelector(".reiniciarQuizz");
     reiniciar.classList.remove("escondido");
@@ -224,27 +256,29 @@ function mostrarNivel() {
     home.classList.remove("escondido");
 
     const desempenho = Number(((questaoAcertada/numeroQuestoes)*100).toFixed());
-
-    const quadrinho = nivel.querySelector(".quadrinho");
+    const quadrinho = nivelResultado.querySelector(".quadrinho");
 
     if(quadrinho === null) {
         alert("Falha ao buscar Nível do Servidor")
         home.scrollIntoView();
     }
-
-    for (let i = 0; i < (quizzEscolhido.levels).length; i++) {
-        if(desempenho <= quizzEscolhido.levels[i].minValue){
-            quadrinho.innerHTML =`
-            <div class="nivelTitulo">${desempenho}% de acerto: ${quizzEscolhido.levels[i].title}</div>
-            <div class="nivelConteudo">
-                <img src="${quizzEscolhido.levels[i].image}"/>
-                <div class="nivelTexto">${quizzEscolhido.levels[i].text}</div>
-            </div>
-            `
+    else {
+        for (let i = 0; i < (quizzEscolhido.levels).length; i++) {
+            if(desempenho <= quizzEscolhido.levels[i].minValue){
+                quadrinho.innerHTML =`
+                <div class="nivelTitulo">${desempenho}% de acerto: ${quizzEscolhido.levels[i].title}</div>
+                <div class="nivelConteudo">
+                    <img src="${quizzEscolhido.levels[i].image}"/>
+                    <div class="nivelTexto">${quizzEscolhido.levels[i].text}</div>
+                </div>
+                `
+            }
         }
+    
+        quadrinho.querySelector(".nivelConteudo").scrollIntoView();
     }
 
-    quadrinho.querySelector(".nivelConteudo").scrollIntoView();
+
 }
 
 function reiniciarQuizz() {
@@ -254,7 +288,7 @@ function reiniciarQuizz() {
 function voltarQuizz(){
     main.classList.remove("escondido");
     document.querySelector(".containerQuizz").classList.add("escondido");
-    uploadQuizzes()
+    verificarSeusQuizzes()
 }
 ///////////////////////////// PROXIMA QUESTAO /////////////////////////////////////////////////
 
@@ -281,8 +315,6 @@ function conferenciaBasica() {
     urlQuizz = document.querySelector(".urlQuizz").value;
     quantPerguntas = document.querySelector(".quantPerguntas").value;
     quantNiveis = document.querySelector(".quantNiveis").value;
-
-
 
     if ((tituloQuizz.length >= 20) && (tituloQuizz.length <= 65)){
         basicoCerto += 1;
@@ -354,18 +386,12 @@ quadradoPerguntas.innerHTML = "";
         `;
     }           
 }
-/*function perguntaDesdobrada(elemento) {
-    elemento.parentNode.classList.toggle("escondido");
-    document.querySelector(".perguntasInputs").classList.toggle("escondido")
-}*/
-
 
 ///////////////////////////// VALIDAR CRIAÇÃO DE PERGUNTAS DO QUIZZ /////////////////////////////
 
 function conferenciaPergunta() {
 
     perguntaCerto = 0;
-
 
     perguntaInput = document.querySelector(".perguntaInput").value;
     perguntaCor = document.querySelector(".perguntaCor").value;
@@ -378,7 +404,6 @@ function conferenciaPergunta() {
     URLrespostaIncorreta2 = document.querySelector(".URLrespostaIncorreta2").value;
     respostaIncorreta3 = document.querySelector(".respostaIncorreta3").value;
     URLrespostaIncorreta3 = document.querySelector(".URLrespostaIncorreta3").value;
-
     
     if (perguntaInput.length >= 20) {
         perguntaCerto += 2;
@@ -507,7 +532,6 @@ function conferenciaNiveis() {
     urlimg = document.querySelector(".urlimg").value;
     descricaoNivel = document.querySelector(".descricaoNivel").value;
 
-
     if ((tituloNivel.length >= 10) && (typeof tituloNivel == 'string')){
         nivelCerto += 1;
     } if ((parseInt(acerto) >= 0) && (parseInt(acerto) <= 100)) {
@@ -517,7 +541,6 @@ function conferenciaNiveis() {
     } if ((descricaoNivel.length >= 30) && (typeof descricaoNivel == 'string')) {
         nivelCerto += 1;
     }
-
 
     if (nivelCerto == 4) {
         salvarNiveisUsuario();
@@ -542,8 +565,6 @@ function salvarNiveisUsuario() {
         });
     }
 }
-
-
 
 function carregarTelaFinalizado() {
 
@@ -591,12 +612,12 @@ function quizzesUsuario(quizzCriado) {
 }
 
 ///////////////////////////// VOLTAR PARA HOME COM QUIZZ FEITO /////////////////////////////
-
-
 function voltarHome() {
     document.querySelector(".finalizarQuizz").classList.add("escondido");
     main.classList.remove("escondido");
 
     document.querySelector(".nao-tem-quizz").classList.add("escondido");
     document.querySelector(".meus-quizzes").classList.remove("escondido");
+
+    verificarSeusQuizzes()
 }
