@@ -2,19 +2,24 @@ let numeroQuizzes = 0;
 let basicoCerto;
 let perguntaCerto;
 let nivelCerto;
+let tituloQuizz;
+let urlQuizz;
 let quantPerguntas;
 let quantNiveis;
 let quizzes = [];
 let quizzEscolhido;
 let quizzFazendo = [];
 let promessaLength;
-let objetoQuestions = {};
+let questaoAcertada;
+let questaoFeita = 0;
+let numeroQuestoes;
+
+//variáveis das perguntas//
 
 let perguntaInput;
 let perguntaCor;
 let respostaCorreta
 let URLrespostaCorreta;
-
 let respostaIncorreta1;
 let URLrespostaIncorreta1;
 let respostaIncorreta2;
@@ -22,9 +27,14 @@ let URLrespostaIncorreta2;
 let respostaIncorreta3;
 let URLrespostaIncorreta3;
 
-let questaoAcertada;
-let questaoFeita = 0;
-let numeroQuestoes;
+//variáveis dos níveis//
+
+let tituloNivel;
+let acerto;
+let urlimg;
+let descricaoNivel;
+
+
 
 
 const main = document.querySelector("main");
@@ -163,10 +173,10 @@ function checaOpcao(elemento) {
     const clicado = elemento.querySelector(".checkarOpcao");
     clicado.classList.add("clicado")    
     
-    const esbranquiçar = elemento.parentNode;
+    const esbranquicar = elemento.parentNode;
 
-    for (let i = 0; i < esbranquiçar.children.length; i++) {
-        let item = esbranquiçar.querySelector(".opcao.unclicked");
+    for (let i = 0; i < esbranquicar.children.length; i++) {
+        let item = esbranquicar.querySelector(".opcao.unclicked");
         let itemEscolhido = item.querySelector(".clicado");
         item.classList.remove("unclicked");
         item.removeAttribute("onclick");
@@ -178,7 +188,7 @@ function checaOpcao(elemento) {
         }
 
         if (itemEscolhido === null){
-            item.classList.add("esbranquiçado")
+            item.classList.add("esbranquicado")
         }
     }
 
@@ -226,8 +236,8 @@ function criarQuizz() {
 function conferenciaBasica() {
     basicoCerto = 0;
 
-    const tituloQuizz = document.querySelector(".tituloQuizz").value;
-    const urlQuizz = document.querySelector(".urlQuizz").value;
+    tituloQuizz = document.querySelector(".tituloQuizz").value;
+    urlQuizz = document.querySelector(".urlQuizz").value;
     quantPerguntas = document.querySelector(".quantPerguntas").value;
     quantNiveis = document.querySelector(".quantNiveis").value;
 
@@ -301,9 +311,7 @@ quadradoPerguntas.innerHTML = "";
                     <ion-icon name="create-outline"></ion-icon>
                 </button>
             </div> -->
-        
-            `;
-                
+        `;
     }           
 }
 /*function perguntaDesdobrada(elemento) {
@@ -370,6 +378,7 @@ function conferenciaPergunta() {
         salvarPerguntasUsuario();
         document.querySelector(".criePerguntas").classList.add("escondido");
         document.querySelector(".decidaNiveis").classList.remove("escondido");
+        carregarNiveis();
     } if (perguntaCerto < 18) {
         alert("Tem alguma informação errada aí! Favor preencher corretamente os campos");
     }
@@ -390,7 +399,7 @@ function URL(testeURL) {
 
 function salvarPerguntasUsuario() {
 
-    for (let y = 0; y < quantPerguntas; y++) {
+    for (let y = 0; y < parseInt(quantPerguntas); y++) {
 
         quizzFazendo.questions.push({
             title: `${perguntaInput}`,
@@ -425,6 +434,28 @@ function salvarPerguntasUsuario() {
 }
 
 
+function carregarNiveis () {
+
+    const quadradoNiveis = document.querySelector(".quadradoNiveis");
+    quadradoNiveis.innerHTML = "";
+    
+    for (let n = 1; n <= parseInt(quantNiveis); n++) {
+                
+        quadradoNiveis.innerHTML += `
+            <div class="niveisInputs">
+                <div class="nivel">
+                    <p>Nível ${n}</p>
+                    <input type="text" class="comeco-inputs tituloNivel" placeholder="Título do nível">
+                    <input type="text" class="comeco-inputs acerto" placeholder="% de acerto mínima">
+                    <input type="text" class="comeco-inputs urlimg" placeholder="URL da imagem do nível">
+                    <input type="text" class="comeco-inputs descricaoNivel" placeholder="Descrição do nível">
+                </div>
+            </div>
+        `;
+    }        
+}
+
+
 
 
 ///////////////////////////// VALIDAR CRIAÇÃO DE NÍVEIS DO QUIZZ /////////////////////////////
@@ -433,10 +464,10 @@ function salvarPerguntasUsuario() {
 function conferenciaNiveis() {
     nivelCerto = 0;
 
-    const tituloNivel = document.querySelector(".tituloNivel").value;
-    const acerto = document.querySelector(".acerto").value;
-    const urlimg = document.querySelector(".urlimg").value;
-    const descricaoNivel = document.querySelector(".descricaoNivel").value;
+    tituloNivel = document.querySelector(".tituloNivel").value;
+    acerto = document.querySelector(".acerto").value;
+    urlimg = document.querySelector(".urlimg").value;
+    descricaoNivel = document.querySelector(".descricaoNivel").value;
 
 
     if ((tituloNivel.length >= 10) && (typeof tituloNivel == 'string')){
@@ -451,13 +482,45 @@ function conferenciaNiveis() {
 
 
     if (nivelCerto == 4) {
+        salvarNiveisUsuario();
         document.querySelector(".decidaNiveis").classList.add("escondido");
         document.querySelector(".finalizarQuizz").classList.remove("escondido");
+        carregarTelaFinalizado();////////////////////colocar a tela de finalizacao para carregar na funcao///
     } if (nivelCerto < 4) {
         alert("Tem alguma informação errada aí! Favor preencher corretamente os campos");
     }
+}
+
+function salvarNiveisUsuario() {
+    
+    for (let z = 0; z < parseInt(quantNiveis); z++) {
+
+        quizzFazendo.levels.push({
+            title: `${tituloNivel}`,
+            image: `${urlimg}`,
+            text: `${descricaoNivel}`,
+            minValue: `${acerto}`
+        });
+    }
+    console.log(quizzFazendo);
+}
 
 
+
+function carregarTelaFinalizado() {
+
+    const finalizarQuizz = document.querySelector(".finalizarQuizz");
+    finalizarQuizz.innerHTML =`
+        <h3>Seu quizz está pronto!</h3>
+
+        <div style="background: linear-gradient(to bottom, rgba(150, 150, 150, 0), rgba(0, 0, 0, 0.9)),url(${urlQuizz});" class="img-quizz-pronto">
+            <p class="tituloPronto">${tituloQuizz}</p>
+        </div>
+
+        <button class="btn">Finalizar Quizz</button>
+
+        <button class="voltarbtn" onclick="voltarHome()">Voltar para Home</button>
+    `
 }
 
 ///////////////////////////// VOLTAR PARA HOME COM QUIZZ FEITO /////////////////////////////

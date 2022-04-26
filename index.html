@@ -89,9 +89,7 @@
 
             <h3>Crie suas perguntas</h3>
 
-            <div class="quadradoPerguntas">
-                <div class="perguntasInputs"></div>
-            </div>
+            <div class="quadradoPerguntas"></div>
 
             <button class="btn" onclick="conferenciaPergunta()">Prosseguir pra criar níveis</button>
 
@@ -103,24 +101,7 @@
 
             <h3>Agora, decida os níveis</h3>
 
-            <div class="niveisInputs">
-                <div class="nivel">
-                    <p>Nível 1</p>
-                    <input type="text" class="comeco-inputs tituloNivel" placeholder="Título do nível">
-                    <input type="text" class="comeco-inputs acerto" placeholder="% de acerto mínima">
-                    <input type="text" class="comeco-inputs urlimg" placeholder="URL da imagem do nível">
-                    <input type="text" class="comeco-inputs descricaoNivel" placeholder="Descrição do nível">
-                </div>
-            </div>
-
-            <div class="niveldobrado">
-                <p>Nível 2</p>
-                <button><ion-icon name="create-outline"></ion-icon></button>
-            </div>
-
-            <div class="niveldobrado">
-                <p>Nível 3</p>
-                <button><ion-icon name="create-outline"></ion-icon></button>
+            <div class="quadradoNiveis">
             </div>
     
             <button onclick="conferenciaNiveis()" class="btn">Finalizar Quizz</button>
@@ -130,18 +111,6 @@
     </section>
 
     <section class="finalizarQuizz escondido">
-        <div class="quizzProntoCentral">
-
-            <h3>Seu quizz está pronto!</h3>
-
-            <div class="bkg-gradient">
-                <img class="img-quizz-pronto" src="https://guiadoestudante.abril.com.br/wp-content/uploads/sites/4/2010/11/Hogwarts.jpeg?quality=100&strip=info&resize=680,453" alt="">
-            </div>
-
-            <button class="btn">Finalizar Quizz</button>
-
-            <button class="voltarbtn" onclick="voltarHome()">Voltar para Home</button>
-        </div>
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
