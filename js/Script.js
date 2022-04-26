@@ -353,13 +353,11 @@ quadradoPerguntas.innerHTML = "";
             <div class="perguntasInputs">
                 <div class="pergunta">
                 <p>Pergunta ${n}</p>
-
                 <input type="text" class="pergunta-inputs perguntaInput" placeholder="Texto da pergunta">
                 <input type="text" class="pergunta-inputs perguntaCor" placeholder="Cor de fundo da pergunta">
             </div>
             <div class="respostas">
                     <p>Resposta correta</p>
-
                     <input type="text" class="pergunta-inputs respostaCorreta" placeholder="Resposta correta">
                     <input type="text" class="pergunta-inputs URLrespostaCorreta" placeholder="URL da imagem">
                 </div>
@@ -573,9 +571,7 @@ function carregarTelaFinalizado() {
 
     const quizzPronto = document.querySelector(".finalizarQuizz");
     quizzPronto.innerHTML =`
-
         <h3>Seu quizz está pronto!</h3>
-
         <div style="background: linear-gradient(to bottom, rgba(150, 150, 150, 0), rgba(0, 0, 0, 0.9)),url(${urlQuizz});" class="img-quizz-pronto">
             <p class="tituloPronto">${tituloQuizz}</p>
         </div>
@@ -595,6 +591,9 @@ function subindoQuizz() {
     promise.catch(function () {
         console.log("Erro do upload dos Quizzes");
     });
+
+    const carregandoAxios = axios.get(`${API}quizzes/id`);
+    carregandoAxios.then(carregarAxios);
     
     function carregarAxios (response) {
         quizzCriado = (response.data).id;
@@ -602,10 +601,17 @@ function subindoQuizz() {
     }
 }
 
-function quizzesUsuario(elemento) {
-    listaQuizzesUsuario.push(elemento);
-    const dadosLista = JSON.stringify(listaQuizzesUsuario);
-    localStorage.setItem("ids", dadosLista);
+function quizzesUsuario(quizzCriado) {
+
+    const listaQuizzesUsuario = JSON.parse(localStorage.getItem("ids"));
+
+    listaQuizzesUsuario.push(quizzCriado);
+
+    const dadosSerializados = JSON.stringify(listaQuizzesUsuario);
+
+    localStorage.setItem("ids", dadosSerializados);
+    console.log(listaQuizzesUsuario);
+
 }
 
 ///////////////////////////// VOLTAR PARA HOME COM QUIZZ FEITO /////////////////////////////
@@ -618,4 +624,3 @@ function voltarHome() {
 
     verificarSeusQuizzes()
 }
-
