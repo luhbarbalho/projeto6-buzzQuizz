@@ -112,8 +112,6 @@ function renderizarQuizz() {
 
     /////////////////////////////////////////////////////// PARA AJUDAR A RESOLVER O QUIZZ ////////////////////////////////////////////////////////////////////////
     numeroQuestoes = (quizzEscolhido.questions).length;
-    console.log(numeroQuestoes)
-    /////////////////////////////////////////////////////// PARA AJUDAR A RESOLVER O QUIZZ ////////////////////////////////////////////////////////////////////////
 
     for (let i = 0; i < (quizzEscolhido.questions).length; i++) {
         if(i === 0){
@@ -147,7 +145,6 @@ function renderizarQuizz() {
 function renderizarOpcoes(i) {
     
     let opcoes = document.querySelector(".opcoes-resposta.temporaria")
-    console.log(opcoes)
 
     quizzEscolhido.questions[i].answers.sort(sorteador);
     for (let x = 0; x < (quizzEscolhido.questions[i].answers).length; x++) {
@@ -160,7 +157,6 @@ function renderizarOpcoes(i) {
     }
     
     opcoes.classList.remove("temporaria")
-    console.log(opcoes.classList)
 }
 
 function sorteador() { 
@@ -202,6 +198,11 @@ function checaOpcao(elemento) {
     }else {
         proximaQuestao()
     }
+}
+function proximaQuestao() {
+    const proximo = document.querySelector(".proximo");
+    proximo.classList.remove("proximo", "escondido")
+    proximo.querySelector(".opcoes-resposta").scrollIntoView();
 }
 
 
@@ -485,7 +486,7 @@ function conferenciaNiveis() {
         salvarNiveisUsuario();
         document.querySelector(".decidaNiveis").classList.add("escondido");
         document.querySelector(".finalizarQuizz").classList.remove("escondido");
-        carregarTelaFinalizado();////////////////////colocar a tela de finalizacao para carregar na funcao///
+        carregarTelaFinalizado();
     } if (nivelCerto < 4) {
         alert("Tem alguma informação errada aí! Favor preencher corretamente os campos");
     }
@@ -509,8 +510,9 @@ function salvarNiveisUsuario() {
 
 function carregarTelaFinalizado() {
 
-    const finalizarQuizz = document.querySelector(".finalizarQuizz");
-    finalizarQuizz.innerHTML =`
+    const quizzPronto = document.querySelector(".finalizarQuizz");
+    quizzPronto.innerHTML =`
+
         <h3>Seu quizz está pronto!</h3>
 
         <div style="background: linear-gradient(to bottom, rgba(150, 150, 150, 0), rgba(0, 0, 0, 0.9)),url(${urlQuizz});" class="img-quizz-pronto">
