@@ -10,9 +10,9 @@ let quizzes = [];
 let quizzEscolhido;
 
 let questaoAcertada = 0;
+let questaoFeita = 0;
 let quizzFazendo = [];
 let promessaLength;
-let questaoFeita = 0;
 let numeroQuestoes;
 
 //variáveis das perguntas//
@@ -101,18 +101,20 @@ function escolhaQuizz(elemento) {
 
 function renderizarQuizz() {
 
-    const titulozao = document.querySelector(".titulozao");
-
-    titulozao.innerHTML = `
-    <div style="background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.9)),url(${quizzEscolhido.image});" class="imgQuizz">
-        <h2>${quizzEscolhido.title}</h2>
-    </div>
-    `;
-
+    questaoAcertada = 0;
+    questaoFeita = 0;
+    numeroQuestoes = (quizzEscolhido.questions).length;
     const divQuizz = document.querySelector(".containerQuizz");
 
-    /////////////////////////////////////////////////////// PARA AJUDAR A RESOLVER O QUIZZ ////////////////////////////////////////////////////////////////////////
-    numeroQuestoes = (quizzEscolhido.questions).length;
+    divQuizz.innerHTML = "";
+
+    divQuizz.innerHTML = `
+    <div class="titulozao">
+        <div style="background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.9)),url(${quizzEscolhido.image});" class="imgQuizz">
+            <h2>${quizzEscolhido.title}</h2>
+        </div>
+    </div>
+    `;
 
     for (let i = 0; i < (quizzEscolhido.questions).length; i++) {
         if(i === 0){
@@ -212,8 +214,22 @@ function checaOpcao(elemento) {
 function mostrarNivel() {
     const nivel = document.querySelector(".nivel");
     nivel.classList.remove("escondido");
-    const quadrinho = nivel.querySelector(".quadrinho");
+
+    const reiniciar = document.querySelector(".reiniciarQuizz");
+    reiniciar.classList.remove("escondido");
+
+    const home = document.querySelector(".voltarQuizz");
+    home.classList.remove("escondido");
+
     const desempenho = Number(((questaoAcertada/numeroQuestoes)*100).toFixed());
+
+    const quadrinho = nivel.querySelector(".quadrinho");
+
+    if(quadrinho === null) {
+        alert("Falha ao buscar Nível do Servidor")
+        home.scrollIntoView();
+    }
+
     for (let i = 0; i < (quizzEscolhido.levels).length; i++) {
         if(desempenho <= quizzEscolhido.levels[i].minValue){
             quadrinho.innerHTML =`
@@ -225,14 +241,19 @@ function mostrarNivel() {
             `
         }
     }
-    
-    const reiniciar = document.querySelector(".reiniciarQuizz");
-    reiniciar.classList.remove("escondido");
-    const home = document.querySelector(".voltarQuizz");
-    home.classList.remove("escondido");
+
     quadrinho.querySelector(".nivelConteudo").scrollIntoView();
 }
 
+function reiniciarQuizz() {
+    renderizarQuizz()
+}
+
+function voltarQuizz(){
+    main.classList.remove("escondido");
+    document.querySelector(".containerQuizz").classList.add("escondido");
+    uploadQuizzes()
+}
 ///////////////////////////// PROXIMA QUESTAO /////////////////////////////////////////////////
 
 function proximaQuestao() {
