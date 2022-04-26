@@ -9,6 +9,7 @@ let quizzes = [];
 let quizzEscolhido;
 let quizzCriado = [];
 const listaQuizzesUsuario = [];
+let idDesseQuizz;
 
 let questaoAcertada = 0;
 let questaoFeita = 0;
@@ -579,7 +580,7 @@ function carregarTelaFinalizado() {
             <p class="tituloPronto">${tituloQuizz}</p>
         </div>
 
-        <button class="btn">Finalizar Quizz</button>
+        <button class="btn" onclick="escolhaQuizz(${quizzCriado})">Acessar Quizz</button>
 
         <button class="voltarbtn" onclick="voltarHome()">Voltar para Home</button>
     `
