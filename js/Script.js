@@ -316,13 +316,6 @@ function conferenciaBasica() {
     quantPerguntas = document.querySelector(".quantPerguntas").value;
     quantNiveis = document.querySelector(".quantNiveis").value;
 
-    tituloQuizz = 'blibliblibliblibliblibliblibliblibliblibliblibliblibli';
-    urlQuizz = `https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Wizarding_World_of_Harry_Potter_Castle.jpg/800px-Wizarding_World_of_Harry_Potter_Castle.jpg`;
-    quantPerguntas = '3';
-    quantNiveis = '2';//////deletar depois!//////
-
-
-
     if ((tituloQuizz.length >= 20) && (tituloQuizz.length <= 65)){
         basicoCerto += 1;
     } if (URL(urlQuizz) === true) {
@@ -395,18 +388,12 @@ quadradoPerguntas.innerHTML = "";
         `;
     }           
 }
-/*function perguntaDesdobrada(elemento) {
-    elemento.parentNode.classList.toggle("escondido");
-    document.querySelector(".perguntasInputs").classList.toggle("escondido")
-}*/
-
 
 ///////////////////////////// VALIDAR CRIAÇÃO DE PERGUNTAS DO QUIZZ /////////////////////////////
 
 function conferenciaPergunta() {
 
     perguntaCerto = 0;
-
 
     perguntaInput = document.querySelector(".perguntaInput").value;
     perguntaCor = document.querySelector(".perguntaCor").value;
@@ -419,19 +406,6 @@ function conferenciaPergunta() {
     URLrespostaIncorreta2 = document.querySelector(".URLrespostaIncorreta2").value;
     respostaIncorreta3 = document.querySelector(".respostaIncorreta3").value;
     URLrespostaIncorreta3 = document.querySelector(".URLrespostaIncorreta3").value;
-
-    perguntaInput = `blablablablablablablablablablablablablablablablablabla`;
-    perguntaCor = `#EC362D`;
-    respostaCorreta = 'certa';
-    URLrespostaCorreta = `https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Wizarding_World_of_Harry_Potter_Castle.jpg/800px-Wizarding_World_of_Harry_Potter_Castle.jpg`;
-
-    respostaIncorreta1 = `errada`;
-    URLrespostaIncorreta1 = `https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Wizarding_World_of_Harry_Potter_Castle.jpg/800px-Wizarding_World_of_Harry_Potter_Castle.jpg`;
-    respostaIncorreta2 = `errada`;
-    URLrespostaIncorreta2 = `https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Wizarding_World_of_Harry_Potter_Castle.jpg/800px-Wizarding_World_of_Harry_Potter_Castle.jpg`;
-    respostaIncorreta3 = `errada`;
-    URLrespostaIncorreta3 = `https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Wizarding_World_of_Harry_Potter_Castle.jpg/800px-Wizarding_World_of_Harry_Potter_Castle.jpg`;
-
     
     if (perguntaInput.length >= 20) {
         perguntaCerto += 2;
@@ -560,11 +534,6 @@ function conferenciaNiveis() {
     urlimg = document.querySelector(".urlimg").value;
     descricaoNivel = document.querySelector(".descricaoNivel").value;
 
-    tituloNivel = `bleblebleblebleblebleblebleblebleble`;
-    acerto = `20`;
-    urlimg = `https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Wizarding_World_of_Harry_Potter_Castle.jpg/800px-Wizarding_World_of_Harry_Potter_Castle.jpg`;
-    descricaoNivel = `blebleblebleblebleblebleblebleblebleblebleblebleblebleblebleblebleblebleblebleblebleble`;
-
     if ((tituloNivel.length >= 10) && (typeof tituloNivel == 'string')){
         nivelCerto += 1;
     } if ((parseInt(acerto) >= 0) && (parseInt(acerto) <= 100)) {
@@ -574,7 +543,6 @@ function conferenciaNiveis() {
     } if ((descricaoNivel.length >= 30) && (typeof descricaoNivel == 'string')) {
         nivelCerto += 1;
     }
-
 
     if (nivelCerto == 4) {
         salvarNiveisUsuario();
@@ -599,8 +567,6 @@ function salvarNiveisUsuario() {
         });
     }
 }
-
-
 
 function carregarTelaFinalizado() {
 
@@ -642,8 +608,6 @@ function quizzesUsuario(elemento) {
 }
 
 ///////////////////////////// VOLTAR PARA HOME COM QUIZZ FEITO /////////////////////////////
-
-
 function voltarHome() {
     document.querySelector(".finalizarQuizz").classList.add("escondido");
     main.classList.remove("escondido");
