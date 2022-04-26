@@ -128,7 +128,7 @@ function renderizarQuizz() {
         `;
         } else {
             divQuizz.innerHTML += `
-            <div class="perguntaDiv escondido">
+            <div class="perguntaDiv escondido proximo">
                 <div class="quadrinho">
                     <div style="background-color:${quizzEscolhido.questions[i].color};" class="tituloPergunta">
                         <h4>${quizzEscolhido.questions[i].title}</h4>
@@ -203,10 +203,9 @@ function checaOpcao(elemento) {
     questaoFeita++;
 
     if(questaoFeita === numeroQuestoes) {
-        console.log("Aconteci")
         setTimeout(mostrarNivel, 2000);
     }else {
-        proximaQuestao()
+        setTimeout(proximaQuestao, 2000);
     }
 }
 ///////////////////////////// MOSTRAR NIVEL ///////////////////////////////////////////////////
@@ -215,11 +214,10 @@ function mostrarNivel() {
     nivel.classList.remove("escondido");
     const quadrinho = nivel.querySelector(".quadrinho");
     const desempenho = Number(((questaoAcertada/numeroQuestoes)*100).toFixed());
-    console.log(desempenho)
     for (let i = 0; i < (quizzEscolhido.levels).length; i++) {
         if(desempenho <= quizzEscolhido.levels[i].minValue){
             quadrinho.innerHTML =`
-            <div class="nivelTitulo">${quizzEscolhido.levels[i].title}</div>
+            <div class="nivelTitulo">${desempenho}% de acerto: ${quizzEscolhido.levels[i].title}</div>
             <div class="nivelConteudo">
                 <img src="${quizzEscolhido.levels[i].image}"/>
                 <div class="nivelTexto">${quizzEscolhido.levels[i].text}</div>
@@ -232,7 +230,7 @@ function mostrarNivel() {
     reiniciar.classList.remove("escondido");
     const home = document.querySelector(".voltarQuizz");
     home.classList.remove("escondido");
-    quadrinho.querySelector("nivelConteudo").scrollIntoView();
+    quadrinho.querySelector(".nivelConteudo").scrollIntoView();
 }
 
 ///////////////////////////// PROXIMA QUESTAO /////////////////////////////////////////////////
