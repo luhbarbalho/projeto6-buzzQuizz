@@ -7,7 +7,7 @@ let quantNiveis;
 let quizzes = [];
 let quizzEscolhido;
 
-let questaoAcertada;
+let questaoAcertada = 0;
 let questaoFeita = 0;
 let numeroQuestoes;
 
@@ -113,7 +113,15 @@ function renderizarQuizz() {
         }
 
         renderizarOpcoes(i) 
-    }           
+    }
+
+    divQuizz.innerHTML += `
+    <div class="nivel escondido">
+        <div class="quadrinho"></div>
+    </div>
+    <button class="reiniciarQuizz escondido" onclick="reiniciarQuizz()">Reiniciar Quizz</button>
+    <button class="voltarQuizz escondido" onclick="voltarQuizz()">Voltar pra home</button>
+    `           
 }
 
 function renderizarOpcoes(i) {
@@ -169,16 +177,39 @@ function checaOpcao(elemento) {
     questaoFeita++;
 
     if(questaoFeita === numeroQuestoes) {
-        mostrarNivel()
+        console.log("Aconteci")
+        setTimeout(mostrarNivel, 2000);
     }else {
         setTimeout(proximaQuestao, 2000);
     }
 }
-///////////////////////////// 
+///////////////////////////// MOSTRAR NIVEL ///////////////////////////////////////////////////
 function mostrarNivel() {
-    const Nivel = document.querySelector(".nivel");
-    Nivel.classList.remove("escondido") 
+    const nivel = document.querySelector(".nivel");
+    nivel.classList.remove("escondido");
+    const quadrinho = nivel.querySelector(".quadrinho");
+    const desempenho = Number(((questaoAcertada/numeroQuestoes)*100).toFixed());
+    console.log(desempenho)
+    for (let i = 0; i < (quizzEscolhido.levels).length; i++) {
+        if(desempenho <= quizzEscolhido.levels[i].minValue){
+            quadrinho.innerHTML =`
+            <div class="nivelTitulo">${quizzEscolhido.levels[i].title}</div>
+            <div class="nivelConteudo">
+                <img src="${quizzEscolhido.levels[i].image}"/>
+                <div class="nivelTexto">${quizzEscolhido.levels[i].text}</div>
+            </div>
+            `
+        }
+    }
+    
+    const reiniciar = document.querySelector(".reiniciarQuizz");
+    reiniciar.classList.remove("escondido");
+    const home = document.querySelector(".voltarQuizz");
+    home.classList.remove("escondido");
+    quadrinho.querySelector("nivelConteudo").scrollIntoView();
 }
+
+///////////////////////////// PROXIMA QUESTAO /////////////////////////////////////////////////
 
 function proximaQuestao() {
     const proximo = document.querySelector(".proximo");
