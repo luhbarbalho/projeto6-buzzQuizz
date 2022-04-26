@@ -2,18 +2,46 @@ let numeroQuizzes = 0;
 let basicoCerto;
 let perguntaCerto;
 let nivelCerto;
+let tituloQuizz;
+let urlQuizz;
 let quantPerguntas;
 let quantNiveis;
 let quizzes = [];
 let quizzEscolhido;
 
 let questaoAcertada = 0;
+let quizzFazendo = [];
+let promessaLength;
 let questaoFeita = 0;
 let numeroQuestoes;
 
+//variáveis das perguntas//
+
+let perguntaInput;
+let perguntaCor;
+let respostaCorreta
+let URLrespostaCorreta;
+let respostaIncorreta1;
+let URLrespostaIncorreta1;
+let respostaIncorreta2;
+let URLrespostaIncorreta2;
+let respostaIncorreta3;
+let URLrespostaIncorreta3;
+
+//variáveis dos níveis//
+
+let tituloNivel;
+let acerto;
+let urlimg;
+let descricaoNivel;
+
+
+
+
 const main = document.querySelector("main");
 const API = "https://mock-api.driven.com.br/api/v6/buzzquizz/";
-let promessaLength;
+
+
 
 
 /////////////////////////////UPLOAD DE LIB AXIOS QUIZZES/////////////////////////////
@@ -80,11 +108,11 @@ function renderizarQuizz() {
         <h2>${quizzEscolhido.title}</h2>
     </div>
     `;
-    /////////////////////////////////////////////////////// PARA AJUDAR A RESOLVER O QUIZZ ////////////////////////////////////////////////////////////////////////
+
     const divQuizz = document.querySelector(".containerQuizz");
 
-    numeroQuestoes = (quizzEscolhido.questions).length;
     /////////////////////////////////////////////////////// PARA AJUDAR A RESOLVER O QUIZZ ////////////////////////////////////////////////////////////////////////
+    numeroQuestoes = (quizzEscolhido.questions).length;
 
     for (let i = 0; i < (quizzEscolhido.questions).length; i++) {
         if(i === 0){
@@ -92,22 +120,21 @@ function renderizarQuizz() {
             <div class="perguntaDiv">
                 <div class="quadrinho">
                     <div style="background-color:${quizzEscolhido.questions[i].color};" class="tituloPergunta">
-                         <h4>${quizzEscolhido.questions[i].title}</h4>
+                        <h4>${quizzEscolhido.questions[i].title}</h4>
                     </div>
                     <div class="opcoes-resposta temporaria"></div>
-                 </div>
+                </div>
             </div>
         `;
-        }
-        else {
+        } else {
             divQuizz.innerHTML += `
-            <div class="perguntaDiv escondido proximo">
+            <div class="perguntaDiv escondido">
                 <div class="quadrinho">
                     <div style="background-color:${quizzEscolhido.questions[i].color};" class="tituloPergunta">
-                         <h4>${quizzEscolhido.questions[i].title}</h4>
+                        <h4>${quizzEscolhido.questions[i].title}</h4>
                     </div>
                     <div class="opcoes-resposta temporaria"></div>
-                 </div>
+                </div>
             </div>
         `;
         }
@@ -144,7 +171,6 @@ function renderizarOpcoes(i) {
 function sorteador() { 
     return Math.random() - 0.5; 
 }
-
 ///////////////////////////// CHECA SE A OPCAO SELECIONADA É CORRETA /////////////////////////////
 //ESTAVA AQUI NESSA PARTE, MAS QUE COMBINAMOS Q VC IA FAZER AGORA.
 
@@ -152,10 +178,10 @@ function checaOpcao(elemento) {
     const clicado = elemento.querySelector(".checkarOpcao");
     clicado.classList.add("clicado")    
     
-    const esbranquiçar = elemento.parentNode;
+    const esbranquicar = elemento.parentNode;
 
-    for (let i = 0; i < esbranquiçar.children.length; i++) {
-        let item = esbranquiçar.querySelector(".opcao.unclicked");
+    for (let i = 0; i < esbranquicar.children.length; i++) {
+        let item = esbranquicar.querySelector(".opcao.unclicked");
         let itemEscolhido = item.querySelector(".clicado");
         item.classList.remove("unclicked");
         item.removeAttribute("onclick");
@@ -167,7 +193,7 @@ function checaOpcao(elemento) {
         }
 
         if (itemEscolhido === null){
-            item.classList.add("esbranquiçado")
+            item.classList.add("esbranquicado")
         }
     }
 
@@ -180,7 +206,7 @@ function checaOpcao(elemento) {
         console.log("Aconteci")
         setTimeout(mostrarNivel, 2000);
     }else {
-        setTimeout(proximaQuestao, 2000);
+        proximaQuestao()
     }
 }
 ///////////////////////////// MOSTRAR NIVEL ///////////////////////////////////////////////////
@@ -217,11 +243,31 @@ function proximaQuestao() {
     proximo.querySelector(".opcoes-resposta").scrollIntoView();
 }
 
+
 ///////////////////////////// CLICAR PARA CRIAR NOVO QUIZZ /////////////////////////////
 
 function criarQuizz() {
     main.classList.add("escondido");
     document.querySelector(".comeceComeco").classList.remove("escondido");
+
+
+    ///////////////////////////// CRIAÇÃO DO QUIZZ /////////////////////////////
+    
+    /*document.getElementById("mensagem").value = "";
+    const promise = axios.post(`${API}`, quizzFazendo);
+    promise.then(carregarAxios);
+
+    promise.catch(function () {
+        console.log("Erro do upload dos Quizzes");
+    });
+        
+    function carregarAxios (response) {
+        quizzes = response.data;
+        renderizarTodosQuizzes();
+    }*/
+    
+
+
 }
 
 ///////////////////////////// VALIDAR INFORMAÇÃO BÁSICA DO QUIZZ /////////////////////////////
@@ -229,8 +275,8 @@ function criarQuizz() {
 function conferenciaBasica() {
     basicoCerto = 0;
 
-    const tituloQuizz = document.querySelector(".tituloQuizz").value;
-    const urlQuizz = document.querySelector(".urlQuizz").value;
+    tituloQuizz = document.querySelector(".tituloQuizz").value;
+    urlQuizz = document.querySelector(".urlQuizz").value;
     quantPerguntas = document.querySelector(".quantPerguntas").value;
     quantNiveis = document.querySelector(".quantNiveis").value;
 
@@ -245,14 +291,72 @@ function conferenciaBasica() {
         basicoCerto += 1;
     }
     if (basicoCerto == 4) {
+        quizzFazendo = ({
+            title: `${tituloQuizz}`,
+            image: `${urlQuizz}`,
+            questions: [],
+            levels: []
+        });
+        console.log(quizzFazendo.questions);
         document.querySelector(".comeceComeco").classList.add("escondido");
         document.querySelector(".criePerguntas").classList.remove("escondido");
+        CarregarPerguntas ();
     } if (basicoCerto < 4) {
-        alert("Tem alguma informação errada aí!");
+        alert("Tem alguma informação errada aí! Favor preencher corretamente os campos");
     }
-
-
 }
+
+///////////////////////////// CRIAR OS INPUTS DE PERGUNTAS DO QUIZZ /////////////////////////////
+function CarregarPerguntas () {
+const quadradoPerguntas = document.querySelector(".quadradoPerguntas");
+quadradoPerguntas.innerHTML = "";
+
+    for (let n = 1; n <= parseInt(quantPerguntas); n++) {
+            
+        quadradoPerguntas.innerHTML += `
+            <div class="perguntasInputs">
+                <div class="pergunta">
+                <p>Pergunta ${n}</p>
+
+                <input type="text" class="pergunta-inputs perguntaInput" placeholder="Texto da pergunta">
+                <input type="text" class="pergunta-inputs perguntaCor" placeholder="Cor de fundo da pergunta">
+            </div>
+            <div class="respostas">
+                    <p>Resposta correta</p>
+
+                    <input type="text" class="pergunta-inputs respostaCorreta" placeholder="Resposta correta">
+                    <input type="text" class="pergunta-inputs URLrespostaCorreta" placeholder="URL da imagem">
+                </div>
+                <div class="respostas">
+                    <p>Resposta incorretas</p>
+                    <div class="respostasErro">
+                        <input type="text" class="pergunta-inputs respostaIncorreta1" placeholder="Resposta incorreta 1">
+                        <input type="text" class="pergunta-inputs URLrespostaIncorreta1" placeholder="URL da imagem 1">
+                    </div>
+                    <div class="respostasErro">
+                        <input type="text" class="pergunta-inputs respostaIncorreta2" placeholder="Resposta incorreta 2">
+                        <input type="text" class="pergunta-inputs URLrespostaIncorreta2" placeholder="URL da imagem 2">
+                    </div>
+                    <div class="respostasErro">
+                        <input type="text" class="pergunta-inputs respostaIncorreta3" placeholder="Resposta incorreta 3">
+                        <input type="text" class="pergunta-inputs URLrespostaIncorreta3" placeholder="URL da imagem 3">
+                    </div>
+                </div>
+            </div>
+        
+            <!-- <div class="perguntadobrada">
+                <p>Pergunta ${n}</p>
+                <button onclick="perguntaDesdobrada(this)">
+                    <ion-icon name="create-outline"></ion-icon>
+                </button>
+            </div> -->
+        `;
+    }           
+}
+/*function perguntaDesdobrada(elemento) {
+    elemento.parentNode.classList.toggle("escondido");
+    document.querySelector(".perguntasInputs").classList.toggle("escondido")
+}*/
 
 
 ///////////////////////////// VALIDAR CRIAÇÃO DE PERGUNTAS DO QUIZZ /////////////////////////////
@@ -261,19 +365,19 @@ function conferenciaPergunta() {
 
     perguntaCerto = 0;
 
-    const perguntaInput = document.querySelector(".perguntaInput").value;
-    const perguntaCor = document.querySelector(".perguntaCor").value;
-    const respostaCorreta = document.querySelector(".respostaCorreta").value;
-    const URLrespostaCorreta = document.querySelector(".URLrespostaCorreta").value;
 
-    const respostaIncorreta1 = document.querySelector(".respostaIncorreta1").value;
-    const URLrespostaIncorreta1 = document.querySelector(".URLrespostaIncorreta1").value;
-    const respostaIncorreta2 = document.querySelector(".respostaIncorreta2").value;
-    const URLrespostaIncorreta2 = document.querySelector(".URLrespostaIncorreta2").value;
-    const respostaIncorreta3 = document.querySelector(".respostaIncorreta3").value;
-    const URLrespostaIncorreta3 = document.querySelector(".URLrespostaIncorreta3").value;
+    perguntaInput = document.querySelector(".perguntaInput").value;
+    perguntaCor = document.querySelector(".perguntaCor").value;
+    respostaCorreta = document.querySelector(".respostaCorreta").value;
+    URLrespostaCorreta = document.querySelector(".URLrespostaCorreta").value;
 
-
+    respostaIncorreta1 = document.querySelector(".respostaIncorreta1").value;
+    URLrespostaIncorreta1 = document.querySelector(".URLrespostaIncorreta1").value;
+    respostaIncorreta2 = document.querySelector(".respostaIncorreta2").value;
+    URLrespostaIncorreta2 = document.querySelector(".URLrespostaIncorreta2").value;
+    respostaIncorreta3 = document.querySelector(".respostaIncorreta3").value;
+    URLrespostaIncorreta3 = document.querySelector(".URLrespostaIncorreta3").value;
+    
     if (perguntaInput.length >= 20) {
         perguntaCerto += 2;
     } if (hexadecimal(perguntaCor) === true) {
@@ -309,20 +413,21 @@ function conferenciaPergunta() {
     }
     
 
-
     if (perguntaCerto >= 18) {
+        salvarPerguntasUsuario();
         document.querySelector(".criePerguntas").classList.add("escondido");
         document.querySelector(".decidaNiveis").classList.remove("escondido");
+        carregarNiveis();
     } if (perguntaCerto < 18) {
-        alert("Tem alguma informação errada aí!");
+        alert("Tem alguma informação errada aí! Favor preencher corretamente os campos");
     }
 }
 
-
-
+//(/(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/)apenas url
+//&& testeURL.test(/\.(jpeg|jpg|gif|png)$/apenas imagem(independente de url)
 function URL(testeURL) {
 
-    regexp = (/(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/);
+    regexp = (/\.(jpeg|jpg|gif|png)$/);
     if (regexp.test(testeURL)) {
         return true;
     } else {
@@ -331,16 +436,77 @@ function URL(testeURL) {
 }
 
 
+function salvarPerguntasUsuario() {
+
+    for (let y = 0; y < parseInt(quantPerguntas); y++) {
+
+        quizzFazendo.questions.push({
+            title: `${perguntaInput}`,
+            color: `${perguntaCor}`,
+            answers: []
+        });
+        quizzFazendo.questions[y].answers.push({
+            text: `${respostaCorreta}`,
+            image: `${URLrespostaCorreta}`,
+            isCorrectAnswer: true
+            },
+            {
+            text: `${respostaIncorreta1}`,
+            image: `${URLrespostaIncorreta1}`,
+            isCorrectAnswer: false
+            });
+        if ((respostaIncorreta2).length !== 0) {
+            quizzFazendo.questions[y].answers.push({
+            text: `${respostaIncorreta2}`,
+            image: `${URLrespostaIncorreta2}`,
+            isCorrectAnswer: false
+            });
+        } if ((respostaIncorreta3).length !== 0) {
+            quizzFazendo.questions[y].answers.push({
+            text: `${respostaIncorreta3}`,
+            image: `${URLrespostaIncorreta3}`,
+            isCorrectAnswer: false
+            });
+        }
+        console.log(quizzFazendo);
+    }
+}
+
+
+function carregarNiveis () {
+
+    const quadradoNiveis = document.querySelector(".quadradoNiveis");
+    quadradoNiveis.innerHTML = "";
+    
+    for (let n = 1; n <= parseInt(quantNiveis); n++) {
+                
+        quadradoNiveis.innerHTML += `
+            <div class="niveisInputs">
+                <div class="nivel">
+                    <p>Nível ${n}</p>
+                    <input type="text" class="comeco-inputs tituloNivel" placeholder="Título do nível">
+                    <input type="text" class="comeco-inputs acerto" placeholder="% de acerto mínima">
+                    <input type="text" class="comeco-inputs urlimg" placeholder="URL da imagem do nível">
+                    <input type="text" class="comeco-inputs descricaoNivel" placeholder="Descrição do nível">
+                </div>
+            </div>
+        `;
+    }        
+}
+
+
+
+
 ///////////////////////////// VALIDAR CRIAÇÃO DE NÍVEIS DO QUIZZ /////////////////////////////
 
 
 function conferenciaNiveis() {
     nivelCerto = 0;
 
-    const tituloNivel = document.querySelector(".tituloNivel").value;
-    const acerto = document.querySelector(".acerto").value;
-    const urlimg = document.querySelector(".urlimg").value;
-    const descricaoNivel = document.querySelector(".descricaoNivel").value;
+    tituloNivel = document.querySelector(".tituloNivel").value;
+    acerto = document.querySelector(".acerto").value;
+    urlimg = document.querySelector(".urlimg").value;
+    descricaoNivel = document.querySelector(".descricaoNivel").value;
 
 
     if ((tituloNivel.length >= 10) && (typeof tituloNivel == 'string')){
@@ -355,13 +521,46 @@ function conferenciaNiveis() {
 
 
     if (nivelCerto == 4) {
+        salvarNiveisUsuario();
         document.querySelector(".decidaNiveis").classList.add("escondido");
         document.querySelector(".finalizarQuizz").classList.remove("escondido");
+        carregarTelaFinalizado();
     } if (nivelCerto < 4) {
-        alert("Tem alguma informação errada aí!");
+        alert("Tem alguma informação errada aí! Favor preencher corretamente os campos");
     }
+}
+
+function salvarNiveisUsuario() {
+    
+    for (let z = 0; z < parseInt(quantNiveis); z++) {
+
+        quizzFazendo.levels.push({
+            title: `${tituloNivel}`,
+            image: `${urlimg}`,
+            text: `${descricaoNivel}`,
+            minValue: `${acerto}`
+        });
+    }
+    console.log(quizzFazendo);
+}
 
 
+
+function carregarTelaFinalizado() {
+
+    const quizzPronto = document.querySelector(".finalizarQuizz");
+    quizzPronto.innerHTML =`
+
+        <h3>Seu quizz está pronto!</h3>
+
+        <div style="background: linear-gradient(to bottom, rgba(150, 150, 150, 0), rgba(0, 0, 0, 0.9)),url(${urlQuizz});" class="img-quizz-pronto">
+            <p class="tituloPronto">${tituloQuizz}</p>
+        </div>
+
+        <button class="btn">Finalizar Quizz</button>
+
+        <button class="voltarbtn" onclick="voltarHome()">Voltar para Home</button>
+    `
 }
 
 ///////////////////////////// VOLTAR PARA HOME COM QUIZZ FEITO /////////////////////////////
