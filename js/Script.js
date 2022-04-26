@@ -51,7 +51,6 @@ uploadQuizzes()
 function verificarSeusQuizzes() {
     const ids = localStorage.getItem("ids");
     const listaQuizzesUsuario = JSON.parse(ids);
-    console.log(listaQuizzesUsuario.length)
 
     uploadQuizzes()
 }
@@ -629,22 +628,15 @@ function subindoQuizz() {
     promise.catch(function () {
         console.log("Erro do upload dos Quizzes");
     });
-
-    const carregandoAxios = axios.get(`${API}quizzes/id`);
-    carregandoAxios.then(carregarAxios);
     
     function carregarAxios (response) {
         quizzCriado = (response.data).id;
-
         quizzesUsuario(quizzCriado)
-        console.log(quizzCriado);
     }
 }
 
 function quizzesUsuario(elemento) {
-    console.log(elemento)
     listaQuizzesUsuario.push(elemento);
-    console.log(listaQuizzesUsuario)
     const dadosLista = JSON.stringify(listaQuizzesUsuario);
     localStorage.setItem("ids", dadosLista);
 }
